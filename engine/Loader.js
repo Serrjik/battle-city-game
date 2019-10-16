@@ -23,6 +23,10 @@
 			this.loadOrder.images.push({ name, src })
 		}
 
+		addJson (name, address) {
+			this.loadOrder.jsons.push({ name, address })
+		}
+
 		// callback - функция, которая будет вызвана, когда все изображения и JSON-файлы будут загружены
 		load (callback) {
 			const promises = []
@@ -40,6 +44,25 @@
 						if (this.loadOrder.images.includes(imageData)) {
 							const index = this.loadOrder.images.indexOf(imageData)
 							this.loadOrder.images.splice(index, 1)
+						}
+					})
+
+				promises.push(promise)
+			}
+
+			// Пройдем по всем JSON-файлам, которые нужно загрузить
+			for (const jsonData of this.loadOrder.jsons) {
+				const { name, address } = jsonData
+
+				const promise = Loader
+					.loadJson(address)
+					.then(json => {
+						this.resources.jsons[name] = json
+
+						// Здесь из loadOrder удаляется запись о необходимости загрузки изображения
+						if (this.loadOrder.jsons.includes(jsonData)) {
+							const index = this.loadOrder.jsons.indexOf(jsonData)
+							this.loadOrder.jsons.splice(index, 1)
 						}
 					})
 
@@ -71,6 +94,22 @@
 				catch (err) {
 					reject(err)
 				}
+			})
+		}
+
+		// Метод загружает JSON-файл правильным способом (нужно запомнить этот способ)
+		static loadJson (address) {
+			/*
+				Promise принимает функцию с 2-мя методами.
+				resolve вызывается когда нужный процесс был закончен, и Promise считается выполненным.
+				reject вызывается при ошибке
+			*/
+			return new Promise((resolve, reject) => {
+				fetch(address)
+					.then(result => result.json())
+					.then(result => resolve(result))
+					// catch() подписывается на ошибку Promise'а
+					.catch(err => reject(err))
 			})
 		}
 
