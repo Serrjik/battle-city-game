@@ -1,0 +1,17 @@
+[
+	{
+		"id": 1,
+		"name": "Richard Hugh Blackmore",
+		"instrument": "guitar"
+	},
+	{
+		"id": 2,
+		"name": "Jonathan Douglas Lord",
+		"instrument": "keyboard player"
+	},
+	{
+		"id": 3,
+		"name": "Ian Anderson Paice",
+		"instrument": "drummer"
+	}
+]
