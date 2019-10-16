@@ -9,14 +9,40 @@
 	<!-- 2) Application -->
 	<!-- 3) Rendering -->
 	<script src="engine/Loader.js"></script>
+	<script src="engine/Renderer.js"></script>
 
 	<script>
 
-		// Вытаскивание Loader из GameEngine, чтобы не писать каждый раз перед Loader'ом - GameEngine.
+		// Вытаскивание Loader и Renderer из GameEngine, чтобы не писать каждый раз перед Loader'ом - GameEngine.
 		// Не нужно будет писать GameEngine.Loader
-		const { Loader } = GameEngine
+		const { Loader, Renderer } = GameEngine
 
 		const loader = new Loader
+		// Передаем размеры канваса при создании экземпляра класса
+		const renderer = new Renderer({
+			width: 500,
+			height: 500,
+			background: 'gray',
+
+			// Функция вызывается каждый раз, когда должно обновиться изображение
+			update (timestamp) {
+				renderer.draw((canvas, content) => {
+					content.fillStyle = 'red'
+					content.beginPath()
+					// arc(x, y, radius, angleStart, angleFinish) - рисует часть круга
+					content.arc(
+						canvas.width / 2 + 100 * Math.cos(timestamp / 200),
+						canvas.height / 2 + 100 * Math.sin(timestamp / 200),
+						10,
+						0,
+						Math.PI * 2) // рисует круг
+					content.fill()
+				})
+			}
+		})
+
+		// Добавляем в конец страницы виртуальный канвас, который создан в конструкторе Renderer'а
+		document.body.append(renderer.canvas)
 
 		loader.addImage('til', 'static/til.jpg')
 		loader.addImage('hello', 'static/hello.jpg')
@@ -24,8 +50,16 @@
 		loader.addJson('deepPurple', 'static/deep-purple.json')
 
 		loader.load(() => {
-			console.log('Images loaded')
-			console.log('JSONs loaded')
+			// document.body.append(loader.getImage('til'))
+			// document.body.append(loader.getImage('hello'))
+			// console.log('Images loaded')
+			// console.log('JSONs loaded')
+
+			// const json1 = loader.getJson('persons')
+			// console.log(json1)
+			// const json2 = loader.getJson('deepPurple')
+			// console.log(json2)
+
 		})
 
 		/*
@@ -33,29 +67,29 @@
 			Нужно подписаться на событие resolve, которое будет вызвано внутри Promise.
 			Это делается с помощью then(). Он принимает тот же параметр, что и resolve.
 		*/
-		Loader
-			.loadImage('static/til.jpg')
-			.then(image => {
-				document.body.append(image)
-		})
+		// Loader
+		// 	.loadImage('static/til.jpg')
+		// 	.then(image => {
+		// 		document.body.append(image)
+		// })
 
-		Loader
-			.loadImage('static/hello.jpg')
-			.then(image => {
-				document.body.append(image)
-		})
+		// Loader
+		// 	.loadImage('static/hello.jpg')
+		// 	.then(image => {
+		// 		document.body.append(image)
+		// })
 
-		Loader
-			.loadJson('static/persons.json')
-			.then(json => {
-				console.log(json)
-		})
+		// Loader
+		// 	.loadJson('static/persons.json')
+		// 	.then(json => {
+		// 		console.log(json)
+		// })
 
-		Loader
-			.loadJson('static/deep-purple.json')
-			.then(json => {
-				console.log(json)
-		})
+		// Loader
+		// 	.loadJson('static/deep-purple.json')
+		// 	.then(json => {
+		// 		console.log(json)
+		// })
 
 	</script>
 </body>

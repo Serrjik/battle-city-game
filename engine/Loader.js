@@ -27,6 +27,16 @@
 			this.loadOrder.jsons.push({ name, address })
 		}
 
+		// Метод возвращает запрашиваемый ресурс
+		getImage (name) {
+			return this.resources.images[name]
+		}
+
+		// Метод возвращает запрашиваемый ресурс
+		getJson (name) {
+			return this.resources.jsons[name]
+		}
+
 		// callback - функция, которая будет вызвана, когда все изображения и JSON-файлы будут загружены
 		load (callback) {
 			const promises = []
