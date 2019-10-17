@@ -24,9 +24,27 @@
 			requestAnimationFrame(timestamp => this.tick(timestamp))
 		}
 
+		// Геттер возвращает все displayObjects контейнер со спрайтами всех вложенных контейнеров
+		get displayObjects () {
+			return _getDisplayObjects(this.stage)
+
+			function _getDisplayObjects (container, result = []) {
+				for (const displayObject of container.displayObjects) {
+					if (displayObject instanceof GameEngine.Container) {
+						_getDisplayObjects(displayObject, result)
+					}
+
+					else {
+						result.push(displayObject)
+					}
+				}
+
+				return result
+			}
+		}
+
 		tick (timestamp) {
 			this.update(timestamp)
-			
 			this.clear()
 			this.render()
 

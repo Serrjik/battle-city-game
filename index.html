@@ -17,7 +17,7 @@
 
 		// Вытаскивание Loader, Renderer и Sprite из GameEngine, чтобы не писать каждый раз перед Loader'ом - GameEngine.
 		// Не нужно будет писать GameEngine.Loader
-		const { Loader, Renderer, Sprite } = GameEngine
+		const { Loader, Renderer, Sprite, Container } = GameEngine
 
 		// Создать спрайт
 		let sprite = null
@@ -54,11 +54,18 @@
 					return
 				}
 
-				sprite.x = renderer.canvas.width / 2 + 100 * Math.cos(timestamp / 100)
-				sprite.y = renderer.canvas.height / 2 + 100 * Math.sin(timestamp / 100)
+				if (!spriteSoloduha) {
+					return
+				}
 
-				sprite.frame.x = sprite.texture.width / 2 + 100 * Math.cos(timestamp / 100)
-				sprite.frame.y = sprite.texture.height / 2 + 100 * Math.sin(timestamp / 100)
+				sprite.x = renderer.canvas.width / 2 - 100 * Math.cos(timestamp / 300)
+				sprite.y = renderer.canvas.height / 2 - 100 * Math.sin(timestamp / 300)
+
+				sprite.frame.x = sprite.texture.width / 8 + 100 * Math.cos(timestamp / 400)
+				sprite.frame.y = sprite.texture.height / 8 + 100 * Math.sin(timestamp / 400)
+
+				spriteSoloduha.x = renderer.canvas.width / 1.5 + 100 * Math.cos(timestamp / 300)
+				spriteSoloduha.y = renderer.canvas.height / 1.6 + 100 * Math.sin(timestamp / 300)
 			}
 		})
 
@@ -82,9 +89,38 @@
 			// console.log(json2)
 
 			// Инициировать спрайт
-			sprite = new Sprite(loader.getImage('til'))
-			// Добавить спрайт в stage
-			renderer.stage.add(sprite)
+			sprite = new Sprite(loader.getImage('til'), {
+				// передаем параметры спрайта
+				scale: 0.3,
+				// x: 0,
+				// y: 0,
+				anchorX: 0.6,
+				anchorY: 0.6
+				// width: 100,
+				// height: 100
+			})
+
+			spriteSoloduha = new Sprite(loader.getImage('hello'), {
+				// передаем параметры спрайта
+				scale: 0.1,
+				x: 550,
+				y: 350,
+				// anchorX: 0.5,
+				// anchorY: 0.5
+				// width: 100,
+				// height: 100
+			})
+
+			// Добавить спрайт в контейнер
+			const container = new Container()
+			renderer.stage.add(container)
+			// Добавить спрайт в stage (внутри контейнера)
+			container.add(sprite)
+			container.add(spriteSoloduha)
+
+			// Где должен быть левый верхний угол спрайта:
+			sprite.absoluteX = 0
+			sprite.absoluteY = 0
 
 			// Координаты фрейма
 			sprite.frame.x = 98
@@ -93,10 +129,14 @@
 			sprite.frame.width = 145
 			sprite.frame.height = 200
 
-			// Задать ширину спрайта в абсолютных значениях (px)
-			sprite.width = 145
-			// Задать ширину спрайта в абсолютных значениях (px)
-			sprite.height = 200
+			// // Задать ширину спрайта в абсолютных значениях (px)
+			// sprite.width = 145
+			// // Задать ширину спрайта в абсолютных значениях (px)
+			// sprite.height = 200
+			// spriteSoloduha.x = 100
+			// spriteSoloduha.y = 100
+			// spriteSoloduha.width = 145
+			// spriteSoloduha.height = 160
 
 			// Стартовая инициализация спрайта:
 			// Координаты спрайта
