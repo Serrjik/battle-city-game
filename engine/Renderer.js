@@ -1,3 +1,5 @@
+// Модуль отрисовывает
+
 ;(function () {
 	'use strict'
 
@@ -14,17 +16,29 @@
 			this.canvas.height = args.height || 50
 			this.update = args.update || (() => {})
 
+			// Создать экземпляр контейнера
+			this.stage = new GameEngine.Container()
+
 			// Регистрация функции, которая постоянно вызывается,
 			// чтобы обновлять изображение на канвасе
 			requestAnimationFrame(timestamp => this.tick(timestamp))
 		}
 
 		tick (timestamp) {
-			this.clear()
-			
 			this.update(timestamp)
+			
+			this.clear()
+			this.render()
 
 			requestAnimationFrame(timestamp => this.tick(timestamp))
+		}
+
+		/*
+			Метод вызывает метод draw() с нужными параметрами.
+			Инициирует отрисовку, но сам ей не занимается.
+		*/
+		render () {
+			this.stage.draw(this.canvas, this.context)
 		}
 
 		// Метод рисует картинку
@@ -33,12 +47,12 @@
 		}
 
 		clear () {
-			this.draw((canvas, context) => {
-				context.fillStyle = this.background
-				context.beginPath()
-				context.rect(0, 0, canvas.width, canvas.height)
-				context.fill()
-			})
+			// this.draw((canvas, context) => {
+				this.context.fillStyle = this.background
+				this.context.beginPath()
+				this.context.rect(0, 0, this.canvas.width, this.canvas.height)
+				this.context.fill()
+			// })
 		}
 	}
 

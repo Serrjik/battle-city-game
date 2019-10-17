@@ -8,25 +8,37 @@
 	<!-- 1) Loader -->
 	<!-- 2) Application -->
 	<!-- 3) Rendering -->
+	<script src="engine/Container.js"></script>
 	<script src="engine/Loader.js"></script>
 	<script src="engine/Renderer.js"></script>
+	<script src="engine/Sprite.js"></script>
 
 	<script>
 
-		// Вытаскивание Loader и Renderer из GameEngine, чтобы не писать каждый раз перед Loader'ом - GameEngine.
+		// Вытаскивание Loader, Renderer и Sprite из GameEngine, чтобы не писать каждый раз перед Loader'ом - GameEngine.
 		// Не нужно будет писать GameEngine.Loader
-		const { Loader, Renderer } = GameEngine
+		const { Loader, Renderer, Sprite } = GameEngine
+
+		// Создать спрайт
+		let sprite = null
 
 		const loader = new Loader
+		/*
+			Экземпляр класса Renderer содержит в себе информацию о том, что нужно отрисовать.
+			Как это отрисовать, он знать не должен!
+			Это должен выполнять игровой движок.
+		*/
 		// Передаем размеры канваса при создании экземпляра класса
 		const renderer = new Renderer({
+			// Размеры канваса
 			width: 500,
 			height: 500,
+			// Цвет фона
 			background: 'gray',
 
 			// Функция вызывается каждый раз, когда должно обновиться изображение
 			update (timestamp) {
-				renderer.draw((canvas, content) => {
+				/*renderer.draw((canvas, content) => {
 					content.fillStyle = 'red'
 					content.beginPath()
 					// arc(x, y, radius, angleStart, angleFinish) - рисует часть круга
@@ -37,7 +49,16 @@
 						0,
 						Math.PI * 2) // рисует круг
 					content.fill()
-				})
+				})*/
+				if (!sprite) {
+					return
+				}
+
+				sprite.x = renderer.canvas.width / 2 + 100 * Math.cos(timestamp / 100)
+				sprite.y = renderer.canvas.height / 2 + 100 * Math.sin(timestamp / 100)
+
+				sprite.frame.x = sprite.texture.width / 2 + 100 * Math.cos(timestamp / 100)
+				sprite.frame.y = sprite.texture.height / 2 + 100 * Math.sin(timestamp / 100)
 			}
 		})
 
@@ -60,6 +81,31 @@
 			// const json2 = loader.getJson('deepPurple')
 			// console.log(json2)
 
+			// Инициировать спрайт
+			sprite = new Sprite(loader.getImage('til'))
+			// Добавить спрайт в stage
+			renderer.stage.add(sprite)
+
+			// Координаты фрейма
+			sprite.frame.x = 98
+			sprite.frame.y = 10
+			// Размеры фрейма
+			sprite.frame.width = 145
+			sprite.frame.height = 200
+
+			// Задать ширину спрайта в абсолютных значениях (px)
+			sprite.width = 145
+			// Задать ширину спрайта в абсолютных значениях (px)
+			sprite.height = 200
+
+			// Стартовая инициализация спрайта:
+			// Координаты спрайта
+			// sprite.x = 100
+			// sprite.y = 300
+			// // Задать ширину спрайта в абсолютных значениях (px)
+			// sprite.width = 100
+			// // Задать ширину спрайта в абсолютных значениях (px)
+			// sprite.height = 100
 		})
 
 		/*
