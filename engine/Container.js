@@ -2,8 +2,13 @@
 ;(function () {
 	'use strict'
 
-	class Container {
-		constructor () {
+	class Container extends GameEngine.DisplayObject {
+		constructor (args = {}) {
+			/*
+				super() вызывает конструктор родительского класса.
+				Нужно ВСЕГДА вызывать в конструкторе.
+			*/
+			super(args)
 			// объекты, которые нужно рисовать
 			this.displayObjects = []
 		}

@@ -8,6 +8,7 @@
 	<!-- 1) Loader -->
 	<!-- 2) Application -->
 	<!-- 3) Rendering -->
+	<script src="engine/DisplayObject.js"></script>
 	<script src="engine/Container.js"></script>
 	<script src="engine/Loader.js"></script>
 	<script src="engine/Renderer.js"></script>
@@ -54,18 +55,18 @@
 					return
 				}
 
-				if (!spriteSoloduha) {
+				/*if (!spriteSoloduha) {
 					return
-				}
+				}*/
 
-				sprite.x = renderer.canvas.width / 2 - 100 * Math.cos(timestamp / 300)
-				sprite.y = renderer.canvas.height / 2 - 100 * Math.sin(timestamp / 300)
+				// sprite.x = renderer.canvas.width / 2 - 100 * Math.cos(timestamp / 300)
+				// sprite.y = renderer.canvas.height / 2 - 100 * Math.sin(timestamp / 300)
 
-				sprite.frame.x = sprite.texture.width / 8 + 100 * Math.cos(timestamp / 400)
-				sprite.frame.y = sprite.texture.height / 8 + 100 * Math.sin(timestamp / 400)
+				// sprite.frame.x = sprite.texture.width / 8 + 100 * Math.cos(timestamp / 400)
+				// sprite.frame.y = sprite.texture.height / 8 + 100 * Math.sin(timestamp / 400)
 
-				spriteSoloduha.x = renderer.canvas.width / 1.5 + 100 * Math.cos(timestamp / 300)
-				spriteSoloduha.y = renderer.canvas.height / 1.6 + 100 * Math.sin(timestamp / 300)
+				// spriteSoloduha.x = renderer.canvas.width / 1.5 + 100 * Math.cos(timestamp / 300)
+				// spriteSoloduha.y = renderer.canvas.height / 1.6 + 100 * Math.sin(timestamp / 300)
 			}
 		})
 
@@ -94,13 +95,13 @@
 				scale: 0.3,
 				// x: 0,
 				// y: 0,
-				anchorX: 0.6,
-				anchorY: 0.6
+				// anchorX: 0.6,
+				// anchorY: 0.6
 				// width: 100,
 				// height: 100
 			})
 
-			spriteSoloduha = new Sprite(loader.getImage('hello'), {
+			/*spriteSoloduha = new Sprite(loader.getImage('hello'), {
 				// передаем параметры спрайта
 				scale: 0.1,
 				x: 550,
@@ -109,25 +110,25 @@
 				// anchorY: 0.5
 				// width: 100,
 				// height: 100
-			})
+			})*/
 
 			// Добавить спрайт в контейнер
 			const container = new Container()
 			renderer.stage.add(container)
 			// Добавить спрайт в stage (внутри контейнера)
 			container.add(sprite)
-			container.add(spriteSoloduha)
+			// container.add(spriteSoloduha)
 
 			// Где должен быть левый верхний угол спрайта:
-			sprite.absoluteX = 0
-			sprite.absoluteY = 0
+			// sprite.absoluteX = 0
+			// sprite.absoluteY = 0
 
 			// Координаты фрейма
-			sprite.frame.x = 98
-			sprite.frame.y = 10
+			// sprite.frame.x = 98
+			// sprite.frame.y = 10
 			// Размеры фрейма
-			sprite.frame.width = 145
-			sprite.frame.height = 200
+			// sprite.frame.width = 145
+			// sprite.frame.height = 200
 
 			// // Задать ширину спрайта в абсолютных значениях (px)
 			// sprite.width = 145
@@ -176,6 +177,41 @@
 		// 	.then(json => {
 		// 		console.log(json)
 		// })
+
+		// *********** Пример наследования ***********
+		class A {
+			constructor () {
+				this.a = 5
+				this.c = 100
+			}
+
+			funA () {
+				console.log('funA')
+			}
+		}
+		// Класс B унаследован от класса A
+		class B extends A {
+			constructor () {
+				/*
+					super() вызывает конструктор родительского класса.
+					Нужно ВСЕГДА вызывать в конструкторе.
+				*/
+				super()
+
+				this.b = 'hello'
+				this.c = 'world'
+			}
+
+			funB () {
+				// Получить доступ к методу родительского класса:
+				super.funA()
+				console.log('funB')
+			}
+		}
+		// Класс C унаследован от класса B
+		class C extends B {}
+		// Класс D унаследован от класса A
+		class D extends A {}
 
 	</script>
 </body>

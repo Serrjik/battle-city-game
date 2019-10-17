@@ -16,7 +16,7 @@
 			this.canvas.height = args.height || 50
 			this.update = args.update || (() => {})
 
-			// Создать экземпляр контейнера
+			// Создать экземпляр контейнера (stage)
 			this.stage = new GameEngine.Container()
 
 			// Регистрация функции, которая постоянно вызывается,
