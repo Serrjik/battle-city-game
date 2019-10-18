@@ -22,10 +22,16 @@
 			*/
 			this.anchorX = args.anchorX || 0
 			this.anchorY = args.anchorY || 0
+
+			// Масштаб
+			this.scale = args.scale || 1
 			// Масштаб по оси X
 			this.scaleX = args.scaleX || 1
 			// Масштаб по оси Y
 			this.scaleY = args.scaleY || 1
+
+			// Поле по умолчанию null. Должно ссылаться на верхний по иерархии элемент.
+			this.parent = null
 
 			if (args.scale !== undefined ) {
 				this.setScale(args.scale)
@@ -34,6 +40,8 @@
 
 		// Геттер - координата X левого верхнего угла
 		get absoluteX () {
+			// здесь не используем scale, потому что он используется
+			// только в момент отрисовки изображения
 			return this.x - this.anchorX * this.width
 		}
 
@@ -45,6 +53,8 @@
 
 		// Геттер - координата Y левого верхнего угла
 		get absoluteY () {
+			// здесь не используем scale, потому что он используется
+			// только в момент отрисовки изображения
 			return this.y - this.anchorY * this.height
 		}
 
@@ -58,6 +68,21 @@
 		setScale (scale) {
 			this.scaleX = scale
 			this.scaleY = scale
+		}
+
+		// Метод устанавливает родительский элемент.
+		setParent (parent) {
+			// Если родительский элемент уже есть
+			if (this.parent) {
+				// удалить этот элемент из родительского
+				this.parent.remove(this)
+			}
+
+			// Добавить этот элемент в родительский
+			if (parent) {
+				parent.add(this)
+				this.parent = parent
+			}
 		}
 
 		/*

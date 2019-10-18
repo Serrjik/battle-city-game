@@ -33,6 +33,12 @@
 
 		// Функция рисует картинку основываясь на переданных канвасе и контексте
 		draw (canvas, context) {
+			context.save()
+			context.translate(this.x, this.y)
+			// - стоит для того чтобы вращение происходило против часовой стрелки
+			context.rotate(-this.rotation)
+			context.scale(this.scaleX, this.scaleY)
+
 			context.drawImage(
 				// текстура, которую нужно отрисовать
 				this.texture,
@@ -43,11 +49,23 @@
 				this.frame.width,
 				this.frame.height,
 				// координаты участка, где нужно отобразить
-				this.absoluteX,
-				this.absoluteY,
+				this.absoluteX - this.x,
+				this.absoluteY - this.y,
+				/*
+					Здесь не изменяем размер изображения,
+					потому что он изменяется для всего контекста
+				*/
 				this.width,
 				this.height
 			)
+
+			// Где якорь?
+			/*context.beginPath()
+			context.fillStyle = 'red'
+			context.arc(0, 0, 5, 0, Math.PI * 2)
+			context.fill()*/
+
+			context.restore()
 		}
 	}
 
