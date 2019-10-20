@@ -13,276 +13,53 @@
 	<script src="engine/Loader.js"></script>
 	<script src="engine/Renderer.js"></script>
 	<script src="engine/Sprite.js"></script>
+	<script src="engine/Scene.js"></script>
+	<script src="engine/Game.js"></script>
+
+	<script src="game/index.js"></script>
 
 	<script>
-
-		// Вытаскивание Loader, Renderer и Sprite из GameEngine, чтобы не писать каждый раз перед Loader'ом - GameEngine.
-		// Не нужно будет писать GameEngine.Loader
-		const { Loader, Renderer, Sprite, Container } = GameEngine
-
-		// Создать спрайт
-		let sprite1 = null
-		let sprite2 = null
-		let spriteAtAt = null
-		let spriteResistance = null
-		let container = null
-		let containerStarWars = null
-
-
-		const loader = new Loader
 		/*
 			Экземпляр класса Renderer содержит в себе информацию о том, что нужно отрисовать.
 			Как это отрисовать, он знать не должен!
 			Это должен выполнять игровой движок.
 		*/
-		// Передаем размеры канваса при создании экземпляра класса
-		const renderer = new Renderer({
-			// Размеры канваса
-			width: 1000,
-			height: 800,
-			// Цвет фона
-			background: 'gray',
 
-			// Функция вызывается каждый раз, когда должно обновиться изображение
-			update (timestamp) {
-				/*renderer.draw((canvas, content) => {
-					content.fillStyle = 'red'
-					content.beginPath()
-					// arc(x, y, radius, angleStart, angleFinish) - рисует часть круга
-					content.arc(
-						canvas.width / 2 + 100 * Math.cos(timestamp / 200),
-						canvas.height / 2 + 100 * Math.sin(timestamp / 200),
-						10,
-						0,
-						Math.PI * 2) // рисует круг
-					content.fill()
-				})*/
-				if (!sprite1 || !sprite2 || spriteAtAt || spriteResistance) {
-					return
-				}
+		// // *********** Пример наследования ***********
+		// class A {
+		// 	constructor () {
+		// 		this.a = 5
+		// 		this.c = 100
+		// 	}
 
-				container.rotation = timestamp / 600
-				sprite1.rotation = timestamp / 600
-				sprite2.rotation = -timestamp / 600
-				// sprite.rotation = 0
+		// 	funA () {
+		// 		console.log('funA')
+		// 	}
+		// }
+		// // Класс B унаследован от класса A
+		// class B extends A {
+		// 	constructor () {
+		// 		/*
+		// 			super() вызывает конструктор родительского класса.
+		// 			Нужно ВСЕГДА вызывать в конструкторе.
+		// 		*/
+		// 		super()
 
-				/*if (!spriteSoloduha) {
-					return
-				}*/
+		// 		this.b = 'hello'
+		// 		this.c = 'world'
+		// 	}
 
-				// sprite.x = renderer.canvas.width / 2 - 100 * Math.cos(timestamp / 300)
-				// sprite.y = renderer.canvas.height / 2 - 100 * Math.sin(timestamp / 300)
-
-				// sprite.frame.x = sprite.texture.width / 8 + 100 * Math.cos(timestamp / 400)
-				// sprite.frame.y = sprite.texture.height / 8 + 100 * Math.sin(timestamp / 400)
-
-				// spriteSoloduha.x = renderer.canvas.width / 1.5 + 100 * Math.cos(timestamp / 300)
-				// spriteSoloduha.y = renderer.canvas.height / 1.6 + 100 * Math.sin(timestamp / 300)
-			}
-		})
-
-		// Добавляем в конец страницы виртуальный канвас, который создан в конструкторе Renderer'а
-		document.body.append(renderer.canvas)
-
-		loader.addImage('til', 'static/til.jpg')
-		loader.addImage('hello', 'static/hello.jpg')
-		loader.addImage('atAt', 'static/at-at.jpg')
-		loader.addImage('resistance', 'static/resistance.jpg')
-		loader.addJson('persons', 'static/persons.json')
-		loader.addJson('deepPurple', 'static/deep-purple.json')
-
-		loader.load(() => {
-			// document.body.append(loader.getImage('til'))
-			// document.body.append(loader.getImage('hello'))
-			// console.log('Images loaded')
-			// console.log('JSONs loaded')
-
-			// const json1 = loader.getJson('persons')
-			// console.log(json1)
-			// const json2 = loader.getJson('deepPurple')
-			// console.log(json2)
-
-			// Инициировать спрайт
-			sprite1 = new Sprite(loader.getImage('til'), {
-				// передаем параметры спрайта
-				x: 100,
-				y: 200,
-				rotation: -Math.PI / 2,
-				scale: 0.3,
-				// x: 0,
-				// y: 0,
-				anchorX: 0.3,
-				anchorY: 0.3
-				// width: 100,
-				// height: 100
-			})
-
-			sprite2 = new Sprite(loader.getImage('til'), {
-				x: 400,
-				y: 200,
-				rotation: Math.PI / 2,
-				scale: 0.3,
-				anchorX: 0.8,
-				anchorY: 0.8
-			})
-
-			spriteAtAt = new Sprite(loader.getImage('atAt'), {
-				x: 40,
-				y: 20,
-				// rotation: Math.PI / 2,
-				scale: 0.3,
-				// anchorX: 0.5,
-				// anchorY: 0.5
-			})
-
-			spriteResistance = new Sprite(loader.getImage('resistance'), {
-				x: 300,
-				y: 20,
-				// rotation: Math.PI / 2,
-				scale: 0.2,
-				// anchorX: 0.5,
-				// anchorY: 0.5
-			})
-			 
-			/*spriteSoloduha = new Sprite(loader.getImage('hello'), {
-				// передаем параметры спрайта
-				scale: 0.1,
-				x: 550,
-				y: 350,
-				// anchorX: 0.5,
-				// anchorY: 0.5
-				// width: 100,
-				// height: 100
-			})*/
-
-			// Добавить спрайт в контейнер
-			container = new Container()
-			container.x = 100
-			container.y = 100
-			// container.rotation = Math.PI / 4
-			container.anchorX = 0.5
-			container.anchorY = 0.5
-			// ширина и высота контейнера
-			container.width = renderer.canvas.width
-			container.height = renderer.canvas.height
-
-			renderer.stage.add(container)
-			// Добавить спрайт в stage (внутри контейнера)
-			container.add(sprite1)
-			container.add(sprite2)
-			// container.add(spriteSoloduha)
-
-			containerStarWars = new Container()
-			containerStarWars.x = 600
-			containerStarWars.y = 500
-			containerStarWars.scaleX = 0.5
-			containerStarWars.scaleY = 0.5
-			// container.rotation = Math.PI / 4
-			// container.anchorX = 0.5
-			// container.anchorY = 0.5
-			// ширина и высота контейнера
-			// containerStarWars.width = renderer.canvas.width / 5
-			// containerStarWars.height = renderer.canvas.height / 5
-
-			renderer.stage.add(containerStarWars)
-			// Добавить спрайт в stage (внутри контейнера)
-			containerStarWars.add(spriteAtAt)
-			containerStarWars.add(spriteResistance)
-
-			// Где должен быть левый верхний угол спрайта:
-			// sprite.absoluteX = 0
-			// sprite.absoluteY = 0
-
-			// Координаты фрейма
-			// sprite.frame.x = 98
-			// sprite.frame.y = 10
-			// Размеры фрейма
-			// sprite.frame.width = 145
-			// sprite.frame.height = 200
-
-			// // Задать ширину спрайта в абсолютных значениях (px)
-			// sprite.width = 145
-			// // Задать ширину спрайта в абсолютных значениях (px)
-			// sprite.height = 200
-			// spriteSoloduha.x = 100
-			// spriteSoloduha.y = 100
-			// spriteSoloduha.width = 145
-			// spriteSoloduha.height = 160
-
-			// Стартовая инициализация спрайта:
-			// Координаты спрайта
-			// sprite.x = 100
-			// sprite.y = 300
-			// // Задать ширину спрайта в абсолютных значениях (px)
-			// sprite.width = 100
-			// // Задать ширину спрайта в абсолютных значениях (px)
-			// sprite.height = 100
-		})
-
-		/*
-			Функция вызывается и возвращает Promise.
-			Нужно подписаться на событие resolve, которое будет вызвано внутри Promise.
-			Это делается с помощью then(). Он принимает тот же параметр, что и resolve.
-		*/
-		// Loader
-		// 	.loadImage('static/til.jpg')
-		// 	.then(image => {
-		// 		document.body.append(image)
-		// })
-
-		// Loader
-		// 	.loadImage('static/hello.jpg')
-		// 	.then(image => {
-		// 		document.body.append(image)
-		// })
-
-		// Loader
-		// 	.loadJson('static/persons.json')
-		// 	.then(json => {
-		// 		console.log(json)
-		// })
-
-		// Loader
-		// 	.loadJson('static/deep-purple.json')
-		// 	.then(json => {
-		// 		console.log(json)
-		// })
-
-		// *********** Пример наследования ***********
-		class A {
-			constructor () {
-				this.a = 5
-				this.c = 100
-			}
-
-			funA () {
-				console.log('funA')
-			}
-		}
-		// Класс B унаследован от класса A
-		class B extends A {
-			constructor () {
-				/*
-					super() вызывает конструктор родительского класса.
-					Нужно ВСЕГДА вызывать в конструкторе.
-				*/
-				super()
-
-				this.b = 'hello'
-				this.c = 'world'
-			}
-
-			funB () {
-				// Получить доступ к методу родительского класса:
-				super.funA()
-				console.log('funB')
-			}
-		}
-		// Класс C унаследован от класса B
-		class C extends B {}
-		// Класс D унаследован от класса A
-		class D extends A {}
-
+		// 	funB () {
+		// 		// Получить доступ к методу родительского класса:
+		// 		super.funA()
+		// 		console.log('funB')
+		// 	}
+		// }
+		// // Класс C унаследован от класса B
+		// class C extends B {}
+		// // Класс D унаследован от класса A
+		// class D extends A {}
+		// // *********** END - Пример наследования ***********
 	</script>
 </body>
 </html>

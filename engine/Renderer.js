@@ -1,5 +1,4 @@
 // Модуль отрисовывает
-
 ;(function () {
 	'use strict'
 
@@ -14,18 +13,10 @@
 			this.background = args.background || 'black'
 			this.canvas.width = args.width || 50
 			this.canvas.height = args.height || 50
-			this.update = args.update || (() => {})
-
-			// Создать экземпляр контейнера (stage)
-			this.stage = new GameEngine.Container()
-
-			// Регистрация функции, которая постоянно вызывается,
-			// чтобы обновлять изображение на канвасе
-			requestAnimationFrame(timestamp => this.tick(timestamp))
 		}
 
 		// Геттер возвращает все displayObjects контейнер со спрайтами всех вложенных контейнеров
-		get displayObjects () {
+		/*get displayObjects () {
 			return _getDisplayObjects(this.stage)
 
 			function _getDisplayObjects (container, result = []) {
@@ -41,23 +32,15 @@
 
 				return result
 			}
-		}
-
-		tick (timestamp) {
-			this.update(timestamp)
-			this.clear()
-			this.render()
-
-			requestAnimationFrame(timestamp => this.tick(timestamp))
-		}
+		}*/
 
 		/*
 			Метод вызывает метод draw() с нужными параметрами.
 			Инициирует отрисовку, но сам ей не занимается.
 		*/
-		render () {
+		/*render () {
 			this.stage.draw(this.canvas, this.context)
-		}
+		}*/
 
 		// Метод рисует картинку
 		draw (callback) {
