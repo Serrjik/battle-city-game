@@ -116,16 +116,17 @@ const mainScene = new Scene({
 		// Вытащить keyboard, чтобы не писать каждый раз длинный путь:
 		const { keyboard } = this.parent
 
-		let speedRotation = keyboard.space ? Math.PI / 100 : Math.PI / 200
+		this.til.velocity.x = 0
+		this.til.velocity.y = 0
 
 		// Что делать, если нажата клавиша Вверх:
 		if (keyboard.arrowUp) {
-			this.til.rotation += speedRotation
+			this.til.velocity.y = -5
 		}
 
 		// Что делать, если нажата клавиша Вниз:
 		if (keyboard.arrowDown) {
-			this.til.rotation -= speedRotation
+			this.til.velocity.y = 5
 		}
 	}
 })

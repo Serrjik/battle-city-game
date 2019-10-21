@@ -10,10 +10,22 @@
 				Нужно ВСЕГДА вызывать в конструкторе.
 			*/
 			super(args)
-			// текстура
-			this.texture = texture
 			// фрейм - кусок изображения, который нужно отрисовать
 			const frame = args.frame || {}
+			const velocity = args.velocity || {}
+
+			// текстура
+			this.texture = texture
+
+			/*
+				Скорость.
+				Вместо того, чтобы изменять координаты объекта, будем изменять его скорость.
+				Координаты будут изменяться автоматом опираясь на скорость.
+			*/
+			this.velocity = {
+				x: velocity.x || 0,
+				y: velocity.y || 0
+			}
 
 			this.frame = {
 				x: frame.x || 0,
@@ -29,6 +41,12 @@
 			if (args.height === undefined) {
 				this.height = this.frame.height
 			}
+		}
+
+		// Метод изменяет координаты спрайта, опираясь на скорость.
+		tick (timestamp) {
+			this.x += this.velocity.x
+			this.y += this.velocity.y
 		}
 
 		// Функция рисует картинку основываясь на переданных канвасе и контексте

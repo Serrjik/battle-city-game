@@ -30,6 +30,15 @@
 			}
 		}
 
+		// Метод проходит по всем дочерним элементам контейнера и вызывает у них update().
+		tick (timestamp) {
+			for (const displayObject of this.displayObjects) {
+				if (displayObject.tick) {
+					displayObject.tick(timestamp)
+				}
+			}
+		}
+
 		// Метод удаляет объекты из коллекции
 		remove (...displayObjects) {
 			for (const displayObject of displayObjects) {

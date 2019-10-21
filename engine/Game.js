@@ -109,6 +109,11 @@
 				scene.update(timestamp)
 			}
 
+			for (const scene of startedScenes) {
+				// После update() вызвать метод tick() - изменить координаты опираясь на скорость.
+				scene.tick(timestamp)
+			}
+
 			this.renderer.clear()
 
 			for (const scene of startedScenes) {
