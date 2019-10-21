@@ -42,7 +42,17 @@ const mainScene = new Scene({
 			anchorY: 0.5,
 			x: this.parent.renderer.canvas.width / 2,
 			y: this.parent.renderer.canvas.height / 2,
-			debug: true
+			debug: true,
+			/*
+				По параметрам body будем проверять столкновение 2-х объектов.
+				Если красные поля пересеклись, значит объекты столкнулись.
+			*/
+			body: {
+				x: 0,
+				y: 0.5,
+				width: 1,
+				height: 0.5
+			}
 		})
 
 		/*
