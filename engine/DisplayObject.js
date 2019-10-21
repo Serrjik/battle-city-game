@@ -75,16 +75,17 @@
 		// Метод устанавливает родительский элемент.
 		setParent (parent) {
 			// Если родительский элемент уже есть
-			if (this.parent) {
+			if (this.parent && this.parent.remove) {
 				// удалить этот элемент из родительского
 				this.parent.remove(this)
 			}
 
 			// Добавить этот элемент в родительский
-			if (parent) {
+			if (parent && parent.add) {
 				parent.add(this)
-				this.parent = parent
 			}
+			
+			this.parent = parent
 		}
 
 		/*

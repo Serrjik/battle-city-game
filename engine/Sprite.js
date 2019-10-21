@@ -40,6 +40,7 @@
 			*/
 			super.draw(() => {
 				context.save()
+				// Сместить координаты:
 				context.translate(this.x, this.y)
 				// - стоит для того чтобы вращение происходило против часовой стрелки
 				context.rotate(-this.rotation)

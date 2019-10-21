@@ -16,6 +16,7 @@
 			this.loader = new GameEngine.Loader()
 			// Контейнер со сценами, с которыми будем работать:
 			this.scenesCollection = new GameEngine.Container()
+			this.keyboard = new GameEngine.Keyboard()
 
 			/*
 				Если у нас есть сцена, вызываем метод addScene()
@@ -125,6 +126,87 @@
 			}
 
 			requestAnimationFrame(timestamp => this.tick(timestamp))
+		}
+
+		getScene (name) {
+			// Если передаем саму сцену:
+			if (name instanceof GameEngine.Scene) {
+				// Если такая сцена есть в текущем комплекте сцен:
+				if (this.scenes.includes(name)) {
+					return name
+				}
+			}
+
+			// Иначе, если передаём имя сцены:
+			if (typeof name === 'string') {
+				// Пройти по всем сценам:
+				for (const scene of this.scenes) {
+					if (scene.name === name) {
+						return scene
+					}
+				}
+			}
+		}
+
+		// Метод запускает сцену.
+		startScene (name) {
+			/*
+				При старте сцены нужно её прогнать по стадиям
+				загрузки, инициализации, обновления.
+			*/
+			const scene = this.getScene(name)
+
+			// Если сцену не нашли:
+			if (!scene) {
+				return false
+			}
+
+			// Если сцена была найдена, нужно её запустить:
+			// Поменять статус на 'loading' (сейчас происходит загрузка).
+			scene.status = 'loading'
+			/*
+				Запустить сцену.
+				Передаем в функцию loading() функцию loader().
+				Функция loader() должна зарегистрировать все
+				загружаемые в данную сцену материалы.
+			*/
+			scene.loading(this.loader)
+
+			this.loader.load(() => {
+				/*
+					После того, как все данные загрузятся,
+					у сцены нужно запустить сначала init(), а потом update()
+				*/
+				// После загрузки сцены изменить её статус на 'init'.
+				scene.status = 'init'
+				// Запустим у них init()
+				scene.init()
+
+				// После 'init'a статус должен быть 'started'.
+				scene.status = 'started'
+			})
+
+			return true // Нашли нужную сцену и стартовали её
+		}
+
+		finishScene (name) {
+			const scene = this.getScene(name)
+
+			// Если сцену не нашли:
+			if (!scene) {
+				return false
+			}
+
+			/*
+				Эта запись лишняя, потому что поле статус будет удалено.
+				Этот статус пригодится, если наблюдать за удалением сцены
+				из лаунчера - видеть, в каком статусе сцена.
+				Так мы поймем, что в этом момент
+				над сценой проводится beforeDestroy().
+			*/
+			scene.status = 'finished'
+			this.scenesCollection.remove(scene)
+			scene.beforeDestroy()
 		}
 	}
 
