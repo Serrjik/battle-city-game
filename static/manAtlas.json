@@ -1,0 +1,85 @@
+{
+    "actions": {
+        "stayDown": {
+            "keys": [
+                ["man", "down", "frame1"]
+            ]
+        },
+        "moveDown": {
+            "duration": 500,
+            "keys": [
+                ["man", "down", "frame1"],
+                ["man", "down", "frame2"],
+                ["man", "down", "frame3"],
+                ["man", "down", "frame4"]
+            ]
+        },
+        "moveLeft": {
+            "duration": 500,
+            "keys": [
+                ["man", "left", "frame1"],
+                ["man", "left", "frame2"],
+                ["man", "left", "frame3"],
+                ["man", "left", "frame4"]
+            ]
+        }
+    },
+    "frames": [
+        {
+            "keys": ["man", "down", "frame1"],
+            "x": 9,
+            "y": 6,
+            "width": 38,
+            "height": 54
+        },
+        {
+            "keys": ["man", "down", "frame2"],
+            "x": 73,
+            "y": 6,
+            "width": 38,
+            "height": 54
+        },
+        {
+            "keys": ["man", "down", "frame3"],
+            "x": 137,
+            "y": 6,
+            "width": 38,
+            "height": 54
+        },
+        {
+            "keys": ["man", "down", "frame4"],
+            "x": 201,
+            "y": 6,
+            "width": 38,
+            "height": 54
+        },
+        {
+            "keys": ["man", "left", "frame1"],
+            "x": 9,
+            "y": 70,
+            "width": 38,
+            "height": 54
+        },
+        {
+            "keys": ["man", "left", "frame2"],
+            "x": 73,
+            "y": 70,
+            "width": 38,
+            "height": 54
+        },
+        {
+            "keys": ["man", "left", "frame3"],
+            "x": 137,
+            "y": 70,
+            "width": 38,
+            "height": 54
+        },
+        {
+            "keys": ["man", "left", "frame4"],
+            "x": 201,
+            "y": 70,
+            "width": 38,
+            "height": 54
+        }
+    ]
+}

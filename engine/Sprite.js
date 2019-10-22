@@ -17,6 +17,14 @@
 			// текстура
 			this.texture = texture
 
+			this.frames = []
+			this.frameNumber = 0
+			// Через какое количество времени нужно будет обновить картинку
+			this.frameDelay = 0
+
+			this.animations = {}
+			this.animation = '' // Название анимации, которая будет действовать
+
 			/*
 				Скорость.
 				Вместо того, чтобы изменять координаты объекта, будем изменять его скорость.
@@ -43,8 +51,82 @@
 			}
 		}
 
+		// Метод задает массив frames
+		setFramesCollection (framesCollection) {
+			this.frames = framesCollection
+			console.log(this.frames)
+		}
+
+		setAnimationsCollection (animationsCollection) {
+			this.animations = animationsCollection
+		}
+
+		// Метод назначает анимацию.
+		startAnimation (name) {
+			// Проверить, есть ли такая анимация?
+			// Если такой анимации нет:
+			if (!this.animations.hasOwnProperty(name)) {
+				return false
+			}
+
+			// Если такая анимация есть:
+			const { duration, frames } = this.animations[name]
+
+			this.animation = name
+			this.frameDelay = duration / frames.length
+			// Обратиться к выбранной анимации и выбрать самый первый фрейм:
+			this.setFrameByKeys(...frames[0])
+		}
+
+		setFrameByKeys (...keys) {
+			const frame = this.getFrameByKeys(...keys)
+
+			// Если фрейм не был найден:
+			if (!frame) {
+				return false
+			}
+
+			// Если фрейм был найден:
+			this.frame.x = frame.x
+			this.frame.y = frame.y
+			this.frame.width = frame.width
+			this.frame.height = frame.height
+		}
+
+		getFrameByKeys (...keys) {
+			/*
+				Нужно найти среди всех фреймов фрейм,
+				который подходит под переданные ключи.
+			*/
+			let flag = false
+
+			for (const frame of this.frames) {
+				// Предположим, что фрейм, который обрабатывается сейчас, подходит
+				flag = true
+
+				for (const key of keys) {
+					// Если такого ключа не будет найдено, флаг опускаем.
+					if (!frame.keys.includes(key)) {
+						flag = false
+						break
+					}
+				}
+
+				if (flag) {
+					return JSON.parse(JSON.stringify(frame))
+				}
+			}
+		}
+
 		// Метод изменяет координаты спрайта, опираясь на скорость.
 		tick (timestamp) {
+			if (this.animation && Util.delay(this.animation + this.uid, this.frameDelay)) {
+				const { frames } = this.animations[this.animation]
+
+				this.frameNumber = (this.frameNumber + 1) % frames.length
+				this.setFrameByKeys(...frames[this.frameNumber])
+			}
+
 			this.x += this.velocity.x
 			this.y += this.velocity.y
 		}

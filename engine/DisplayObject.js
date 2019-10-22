@@ -7,6 +7,8 @@
 
 	class DisplayObject {
 		constructor (args = {}) {
+			this.uid = GameEngine.Util.generateUid()
+
 			// координаты содержащегося объекта
 			this.x = args.x || 0
 			this.y = args.y || 0

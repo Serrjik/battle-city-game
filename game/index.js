@@ -3,7 +3,9 @@
 	чтобы не писать каждый раз перед Loader'ом - GameEngine (деструктуризация).
 	Не нужно будет писать GameEngine.Loader
 */
-const { Body, Sprite, Game, Scene, Point, Line, Container } = GameEngine
+const { Body, Sprite, Game, Scene, Point, Line, Container, Util } = GameEngine
+
+// let n = 1 // Используется для подстановки номера фрейма: frame1 - 'frame' + n.
 
 // Создание сцены:
 const mainScene = new Scene({
@@ -20,8 +22,8 @@ const mainScene = new Scene({
 		которые понадобятся в дальнейшем (будут использованы в сцене).
 	*/
 	loading (loader) {
-		loader.addImage('til', 'static/til.jpg')
-		loader.addJson('persons', 'static/persons.json')
+		loader.addImage('man', 'static/man.png')
+		loader.addJson('manAtlas', 'static/manAtlas.json')
 	},
 
 	/*
@@ -31,18 +33,17 @@ const mainScene = new Scene({
 	*/
 	init () {
 		// Получить текстуру:
-		const tilTexture = this.parent.loader.getImage('til')
-		// Контейнер для точек, прямых, линий и т.д.
-		const graphicContainer = new Container
+		const manTexture = this.parent.loader.getImage('man')
+		const manAtlas = this.parent.loader.getJson('manAtlas')
 
 		// Создать спрайт (пока будет не отрисован):
-		this.til = new Body(tilTexture, {
+		this.man = new Body(manTexture, {
 			scale: 0.5,
 			anchorX: 0.5,
 			anchorY: 0.5,
 			x: this.parent.renderer.canvas.width / 2,
 			y: this.parent.renderer.canvas.height / 2,
-			debug: true,
+			// debug: true,
 			/*
 				По параметрам body будем проверять столкновение 2-х объектов.
 				Если красные поля пересеклись, значит объекты столкнулись.
@@ -54,6 +55,14 @@ const mainScene = new Scene({
 				height: 0.5
 			}
 		})
+
+		this.man.setFramesCollection(manAtlas.frames)
+		this.man.setAnimationsCollection(manAtlas.actions)
+		this.man.startAnimation('moveDown')
+
+		// this.man.setFrameByKeys('man', 'down', 'frame1')
+		// this.man.width = this.man.frame.width
+		// this.man.height = this.man.frame.height
 
 		/*
 			Если точка всегда будет на этой позиции, this можно не писать.
@@ -90,8 +99,7 @@ const mainScene = new Scene({
 			первый дочерний элемент, второй и т.д.
 			Затем отрисовывается следующий контейнер с элементами и т.д.
 		*/
-		this.add(this.til)
-		this.add(graphicContainer)
+		this.add(this.man)
 	},
 
 	/*
@@ -116,17 +124,17 @@ const mainScene = new Scene({
 		// Вытащить keyboard, чтобы не писать каждый раз длинный путь:
 		const { keyboard } = this.parent
 
-		this.til.velocity.x = 0
-		this.til.velocity.y = 0
+		this.man.velocity.x = 0
+		this.man.velocity.y = 0
 
 		// Что делать, если нажата клавиша Вверх:
 		if (keyboard.arrowUp) {
-			this.til.velocity.y = -5
+			this.man.velocity.y = -5
 		}
 
 		// Что делать, если нажата клавиша Вниз:
 		if (keyboard.arrowDown) {
-			this.til.velocity.y = 5
+			this.man.velocity.y = 5
 		}
 	}
 })
