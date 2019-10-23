@@ -18,10 +18,12 @@
 			this.texture = texture
 
 			this.frames = []
+			// this.frames = args.frames || []
 			this.frameNumber = 0
 			// Через какое количество времени нужно будет обновить картинку
 			this.frameDelay = 0
 
+			// this.animations = []
 			this.animations = {}
 			this.animation = '' // Название анимации, которая будет действовать
 
@@ -54,7 +56,7 @@
 		// Метод задает массив frames
 		setFramesCollection (framesCollection) {
 			this.frames = framesCollection
-			console.log(this.frames)
+			// console.log(this.frames)
 		}
 
 		setAnimationsCollection (animationsCollection) {
@@ -66,7 +68,7 @@
 			// Проверить, есть ли такая анимация?
 			// Если такой анимации нет:
 			if (!this.animations.hasOwnProperty(name)) {
-				return false
+				return false // Не удалось назначить такую анимацию.
 			}
 
 			// Если такая анимация есть:
@@ -86,7 +88,7 @@
 				return false
 			}
 
-			// Если фрейм был найден:
+			// Если фрейм был найден, задать параметры текущему фрейму:
 			this.frame.x = frame.x
 			this.frame.y = frame.y
 			this.frame.width = frame.width

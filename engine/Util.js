@@ -8,7 +8,10 @@
 
 	const Util = {}
 
-	// Задержка
+	/*
+		Метод позволяет проверить, прошло ли время timeoff в миллисекундах
+		с момента создания экземпляра задержки с ключом name
+	*/
 	Util.delay = function delay (name, timeoff = null) {
 		// Если такая задержка отсутсвует:
 		if (!delayCollection[name]) {

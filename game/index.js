@@ -5,7 +5,7 @@
 */
 const { Body, Sprite, Game, Scene, Point, Line, Container, Util } = GameEngine
 
-// let n = 1 // Используется для подстановки номера фрейма: frame1 - 'frame' + n.
+let n = 1 // Используется для подстановки номера фрейма: frame1 - 'frame' + n.
 
 // Создание сцены:
 const mainScene = new Scene({
@@ -36,9 +36,13 @@ const mainScene = new Scene({
 		const manTexture = this.parent.loader.getImage('man')
 		const manAtlas = this.parent.loader.getJson('manAtlas')
 
+		console.log(manAtlas)
+
 		// Создать спрайт (пока будет не отрисован):
 		this.man = new Body(manTexture, {
-			scale: 0.5,
+			// frames: manAtlas.frames,
+			scale: 3,
+			atlas: manAtlas,
 			anchorX: 0.5,
 			anchorY: 0.5,
 			x: this.parent.renderer.canvas.width / 2,
@@ -58,11 +62,11 @@ const mainScene = new Scene({
 
 		this.man.setFramesCollection(manAtlas.frames)
 		this.man.setAnimationsCollection(manAtlas.actions)
-		this.man.startAnimation('moveDown')
+		// this.man.startAnimation('moveDown')
 
-		// this.man.setFrameByKeys('man', 'down', 'frame1')
-		// this.man.width = this.man.frame.width
-		// this.man.height = this.man.frame.height
+		this.man.setFrameByKeys('man', 'down', 'frame1')
+		this.man.width = this.man.frame.width
+		this.man.height = this.man.frame.height
 
 		/*
 			Если точка всегда будет на этой позиции, this можно не писать.
@@ -123,6 +127,11 @@ const mainScene = new Scene({
 	update (timestamp) {
 		// Вытащить keyboard, чтобы не писать каждый раз длинный путь:
 		const { keyboard } = this.parent
+
+		if (Util.delay('manFrameUpdate', 150)) {
+			n = n % 4 + 1
+			this.man.setFrameByKeys('man', 'down', 'frame' + n)
+		}
 
 		this.man.velocity.x = 0
 		this.man.velocity.y = 0
