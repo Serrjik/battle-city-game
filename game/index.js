@@ -5,8 +5,6 @@
 */
 const { Body, Sprite, Game, Scene, Point, Line, Container, Util } = GameEngine
 
-let n = 1 // Используется для подстановки номера фрейма: frame1 - 'frame' + n.
-
 // Создание сцены:
 const mainScene = new Scene({
 	// Имя сцены:
@@ -36,18 +34,14 @@ const mainScene = new Scene({
 		const manTexture = this.parent.loader.getImage('man')
 		const manAtlas = this.parent.loader.getJson('manAtlas')
 
-		console.log(manAtlas)
-
 		// Создать спрайт (пока будет не отрисован):
 		this.man = new Body(manTexture, {
-			// frames: manAtlas.frames,
 			scale: 3,
-			atlas: manAtlas,
 			anchorX: 0.5,
 			anchorY: 0.5,
 			x: this.parent.renderer.canvas.width / 2,
 			y: this.parent.renderer.canvas.height / 2,
-			// debug: true,
+			debug: true,
 			/*
 				По параметрам body будем проверять столкновение 2-х объектов.
 				Если красные поля пересеклись, значит объекты столкнулись.
@@ -62,11 +56,11 @@ const mainScene = new Scene({
 
 		this.man.setFramesCollection(manAtlas.frames)
 		this.man.setAnimationsCollection(manAtlas.actions)
-		// this.man.startAnimation('moveDown')
+		this.man.startAnimation('stayDown')
 
-		this.man.setFrameByKeys('man', 'down', 'frame1')
-		this.man.width = this.man.frame.width
-		this.man.height = this.man.frame.height
+		// this.man.setFrameByKeys('man', 'down', 'frame1')
+		// this.man.width = this.man.frame.width
+		// this.man.height = this.man.frame.height
 
 		/*
 			Если точка всегда будет на этой позиции, this можно не писать.
@@ -128,22 +122,40 @@ const mainScene = new Scene({
 		// Вытащить keyboard, чтобы не писать каждый раз длинный путь:
 		const { keyboard } = this.parent
 
-		if (Util.delay('manFrameUpdate', 150)) {
-			n = n % 4 + 1
-			this.man.setFrameByKeys('man', 'down', 'frame' + n)
-		}
-
 		this.man.velocity.x = 0
 		this.man.velocity.y = 0
 
+		// Что делать, если нажата клавиша Влево (KeyA):
+		if (keyboard.arrowLeft) {
+			this.man.velocity.x = -2
+			// Если анимация не соответствует направлению, зададим её правильно:
+			if (this.man.animation !== 'moveLeft') {
+				this.man.startAnimation('moveLeft')
+			}
+		}
+
+		// Что делать, если нажата клавиша Вправо (KeyD):
+		if (keyboard.arrowRight) {
+			this.man.velocity.x = 2
+		}
+
 		// Что делать, если нажата клавиша Вверх:
-		if (keyboard.arrowUp) {
-			this.man.velocity.y = -5
+		else if (keyboard.arrowUp) {
+			this.man.velocity.y = -2
 		}
 
 		// Что делать, если нажата клавиша Вниз:
-		if (keyboard.arrowDown) {
-			this.man.velocity.y = 5
+		else if (keyboard.arrowDown) {
+			this.man.velocity.y = 2
+
+			// Если анимация не соответствует направлению, зададим её правильно:
+			if (this.man.animation !== 'moveDown') {
+				this.man.startAnimation('moveDown')
+			}
+		}
+
+		else if (this.man.animation === 'moveDown') {
+			this.man.startAnimation('stayDown')
 		}
 	}
 })

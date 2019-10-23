@@ -15,21 +15,21 @@
 			this.space = false
 
 			document.body.addEventListener('keydown', function (event) {
-				console.log(event.code)
+				// console.log(event.code)
 				switch (event.code) {
-					case "ArrowUp":
+					case "KeyW":
 						keyboard.arrowUp = true
 						break
 
-					case "ArrowDown":
+					case "KeyS":
 						keyboard.arrowDown = true
 						break
 						
-					case "ArrowRight":
+					case "KeyD":
 						keyboard.arrowRight = true
 						break
 						
-					case "ArrowLeft":
+					case "KeyA":
 						keyboard.arrowLeft = true
 						break
 
@@ -40,21 +40,21 @@
 			})
 
 			document.body.addEventListener('keyup', function (event) {
-				console.log(event.code)
+				// console.log(event.code)
 				switch (event.code) {
-					case "ArrowUp":
+					case "KeyW":
 						keyboard.arrowUp = false
 						break
 
-					case "ArrowDown":
+					case "KeyS":
 						keyboard.arrowDown = false
 						break
 						
-					case "ArrowRight":
+					case "KeyD":
 						keyboard.arrowRight = false
 						break
 						
-					case "ArrowLeft":
+					case "KeyA":
 						keyboard.arrowLeft = false
 						break
 						

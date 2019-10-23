@@ -72,7 +72,7 @@
 			}
 
 			// Если такая анимация есть:
-			const { duration, frames } = this.animations[name]
+			const { duration = Infinity, frames } = this.animations[name]
 
 			this.animation = name
 			this.frameDelay = duration / frames.length
@@ -93,6 +93,10 @@
 			this.frame.y = frame.y
 			this.frame.width = frame.width
 			this.frame.height = frame.height
+
+			// Установить размеры объекта:
+			this.width = this.frame.width
+			this.height = this.frame.height
 		}
 
 		getFrameByKeys (...keys) {

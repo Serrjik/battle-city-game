@@ -1,5 +1,10 @@
 {
     "actions": {
+        "stayDown": {
+            "frames": [
+                ["man", "down", "frame1"]
+            ]
+        },
         "moveDown": {
             "duration": 500,
             "frames": [
@@ -7,6 +12,15 @@
                 ["man", "down", "frame2"],
                 ["man", "down", "frame3"],
                 ["man", "down", "frame4"]
+            ]
+        },
+        "moveLeft": {
+            "duration": 500,
+            "frames": [
+                ["man", "left", "frame1"],
+                ["man", "left", "frame2"],
+                ["man", "left", "frame3"],
+                ["man", "left", "frame4"]
             ]
         }
     },
