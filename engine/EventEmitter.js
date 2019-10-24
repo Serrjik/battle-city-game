@@ -3,7 +3,6 @@
 	'use strict'
 
 	class EventEmitter {
-		// Текстура - то, что загрузили с клиента (изображение)
 		constructor () {
 			// Обработчики
 			this.handlers = {}

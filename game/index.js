@@ -38,8 +38,13 @@ const mainScene = new Scene({
 		this.arcadePhysics = new ArcadePhysics
 
 		// Создать спрайт (пока будет не отрисован):
-		this.man = new Man({
-			x: this.parent.renderer.canvas.width / 2,
+		this.man1 = new Man({
+			x: this.parent.renderer.canvas.width / 2 - 100,
+			y: this.parent.renderer.canvas.height / 2
+		})
+
+		this.man2 = new Man({
+			x: this.parent.renderer.canvas.width / 2 + 100,
 			y: this.parent.renderer.canvas.height / 2
 		})
 
@@ -53,7 +58,9 @@ const mainScene = new Scene({
 			первый дочерний элемент, второй и т.д.
 			Затем отрисовывается следующий контейнер с элементами и т.д.
 		*/
-		this.add(this.man)
+		this.add(this.man1, this.man2)
+		// Добавить объекты в аркаду (теперь к ним применится аркадная физика).
+		this.arcadePhysics.add(this.man1, this.man2)
 
 		// Подписаться на событие frameChange. this будет генерировать это событие.
 		/*this.man.on('frameChange', man => {
@@ -112,41 +119,47 @@ const mainScene = new Scene({
 		// Вытащить keyboard, чтобы не писать каждый раз длинный путь:
 		const { keyboard } = this.parent
 
-		this.man.velocity.x = 0
-		this.man.velocity.y = 0
+		this.man1.velocity.x = 0
+		this.man1.velocity.y = 0
+
+		this.man2.velocity.x = 0
+		this.man2.velocity.y = 0
 
 		// Что делать, если нажата клавиша Влево (KeyA):
 		if (keyboard.arrowLeft) {
-			this.man.velocity.x = -2
+			this.man1.velocity.x = -2
 			// Если анимация не соответствует направлению, зададим её правильно:
-			if (this.man.animation !== 'moveLeft') {
-				this.man.startAnimation('moveLeft')
+			if (this.man1.animation !== 'moveLeft') {
+				this.man1.startAnimation('moveLeft')
 			}
 		}
 
 		// Что делать, если нажата клавиша Вправо (KeyD):
 		if (keyboard.arrowRight) {
-			this.man.velocity.x = 2
+			this.man1.velocity.x = 2
 		}
 
 		// Что делать, если нажата клавиша Вверх:
 		else if (keyboard.arrowUp) {
-			this.man.velocity.y = -2
+			this.man1.velocity.y = -2
 		}
 
 		// Что делать, если нажата клавиша Вниз:
 		else if (keyboard.arrowDown) {
-			this.man.velocity.y = 2
+			this.man1.velocity.y = 2
 
 			// Если анимация не соответствует направлению, зададим её правильно:
-			if (this.man.animation !== 'moveDown') {
-				this.man.startAnimation('moveDown')
+			if (this.man1.animation !== 'moveDown') {
+				this.man1.startAnimation('moveDown')
 			}
 		}
 
-		else if (this.man.animation === 'moveDown') {
-			this.man.startAnimation('stayDown')
+		else if (this.man1.animation === 'moveDown') {
+			this.man1.startAnimation('stayDown')
 		}
+
+		// В конце каждого события нужно проводить процессинг аркадной физики.
+		this.arcadePhysics.processing()
 	}
 })
 
