@@ -3,7 +3,7 @@
 	чтобы не писать каждый раз перед Loader'ом - GameEngine (деструктуризация).
 	Не нужно будет писать GameEngine.Loader
 */
-const { Body, Sprite, Game, Scene, Point, Line, Container, Util } = GameEngine
+const { Body, Game, Scene, ArcadePhysics } = GameEngine
 
 // Создание сцены:
 const mainScene = new Scene({
@@ -31,32 +31,34 @@ const mainScene = new Scene({
 	*/
 	init () {
 		// Получить текстуру:
-		const manTexture = this.parent.loader.getImage('man')
-		const manAtlas = this.parent.loader.getJson('manAtlas')
+		Man.texture = this.parent.loader.getImage('man')
+		Man.atlas = this.parent.loader.getJson('manAtlas')
+
+		// Аркада будет на уровне сцены.
+		this.arcadePhysics = new ArcadePhysics
 
 		// Создать спрайт (пока будет не отрисован):
-		this.man = new Body(manTexture, {
-			scale: 3,
-			anchorX: 0.5,
-			anchorY: 0.5,
+		this.man = new Man({
 			x: this.parent.renderer.canvas.width / 2,
-			y: this.parent.renderer.canvas.height / 2,
-			debug: true,
-			/*
-				По параметрам body будем проверять столкновение 2-х объектов.
-				Если красные поля пересеклись, значит объекты столкнулись.
-			*/
-			body: {
-				x: 0,
-				y: 0.5,
-				width: 1,
-				height: 0.5
-			}
+			y: this.parent.renderer.canvas.height / 2
 		})
 
-		this.man.setFramesCollection(manAtlas.frames)
-		this.man.setAnimationsCollection(manAtlas.actions)
-		this.man.startAnimation('stayDown')
+		/*
+			Добавить спрайт в сцену (теперь он отрисуется), точку и линию:
+			Имеет значение порядок подключения
+			(то, что подключено позже, отрисуется позже
+			и закроет собой отрисованное ранее).
+			Важна очередность.
+			Сначала рисуется контейнер, затем отрисовываются
+			первый дочерний элемент, второй и т.д.
+			Затем отрисовывается следующий контейнер с элементами и т.д.
+		*/
+		this.add(this.man)
+
+		// Подписаться на событие frameChange. this будет генерировать это событие.
+		/*this.man.on('frameChange', man => {
+			console.log('frameChange')
+		})*/
 
 		// this.man.setFrameByKeys('man', 'down', 'frame1')
 		// this.man.width = this.man.frame.width
@@ -86,18 +88,6 @@ const mainScene = new Scene({
 		})*/
 
 		// graphicContainer.add(point, line)
-
-		/*
-			Добавить спрайт в сцену (теперь он отрисуется), точку и линию:
-			Имеет значение порядок подключения
-			(то, что подключено позже, отрисуется позже
-			и закроет собой отрисованное ранее).
-			Важна очередность.
-			Сначала рисуется контейнер, затем отрисовываются
-			первый дочерний элемент, второй и т.д.
-			Затем отрисовывается следующий контейнер с элементами и т.д.
-		*/
-		this.add(this.man)
 	},
 
 	/*
@@ -165,7 +155,7 @@ const game = new Game({
 	el: document.body,
 	width: 500,
 	height: 500,
-	background: 'green',
+	background: 'gray',
 	/*
 		Сцена - то, что на данный момент является актуальным, действующим выступлением.
 		Меню - одна сцена. Игра - другая сцена.

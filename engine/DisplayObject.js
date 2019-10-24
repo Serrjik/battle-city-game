@@ -5,8 +5,10 @@
 ;(function () {
 	'use strict'
 
-	class DisplayObject {
+	class DisplayObject extends GameEngine.EventEmitter {
 		constructor (args = {}) {
+			super()
+			
 			this.uid = GameEngine.Util.generateUid()
 
 			// координаты содержащегося объекта
@@ -46,12 +48,12 @@
 		get absoluteX () {
 			// здесь не используем scale, потому что он используется
 			// только в момент отрисовки изображения
-			return this.x - this.anchorX * this.width
+			return this.x - this.anchorX * this.width * this.scaleX
 		}
 
 		// Сеттер - координата X левого верхнего угла
 		set absoluteX (value) {
-			this.x = value + this.anchorX * this.width
+			this.x = value + this.anchorX * this.width * this.scaleX
 			return value
 		}
 
@@ -59,12 +61,12 @@
 		get absoluteY () {
 			// здесь не используем scale, потому что он используется
 			// только в момент отрисовки изображения
-			return this.y - this.anchorY * this.height
+			return this.y - this.anchorY * this.height * this.scaleY
 		}
 
 		// Сеттер - координата Y левого верхнего угла
 		set absoluteY (value) {
-			this.y = value + this.anchorY * this.height
+			this.y = value + this.anchorY * this.height * this.scaleY
 			return value
 		}
 

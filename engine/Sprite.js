@@ -2,6 +2,8 @@
 ;(function () {
 	'use strict'
 
+	
+
 	class Sprite extends GameEngine.DisplayObject {
 		// Текстура - то, что загрузили с клиента (изображение)
 		constructor (texture, args = {}) {
@@ -126,11 +128,19 @@
 
 		// Метод изменяет координаты спрайта, опираясь на скорость.
 		tick (timestamp) {
-			if (this.animation && Util.delay(this.animation + this.uid, this.frameDelay)) {
+			if (this.animation && GameEngine.Util.delay(this.animation + this.uid, this.frameDelay)) {
 				const { frames } = this.animations[this.animation]
 
 				this.frameNumber = (this.frameNumber + 1) % frames.length
 				this.setFrameByKeys(...frames[this.frameNumber])
+
+				/*
+					Каждый раз, перед тем как будет обновляться фрейм,
+					будет генерироваться событие frameChange.
+					И можно передавать список аргументов this (сколько угодно через запятую).
+					Любой объект может генерировать события.
+				*/
+				this.emit('frameChange', this)
 			}
 
 			this.x += this.velocity.x
@@ -150,7 +160,11 @@
 				context.translate(this.x, this.y)
 				// - стоит для того чтобы вращение происходило против часовой стрелки
 				context.rotate(-this.rotation)
-				context.scale(this.scaleX, this.scaleY)
+				/*
+					В спрайтах откажемся от масштаба
+					ради упрощения проверки столкновения двух объеков.
+				*/
+				// context.scale(this.scaleX, this.scaleY)
 
 				context.drawImage(
 					// текстура, которую нужно отрисовать
@@ -167,9 +181,10 @@
 					/*
 						Здесь не изменяем размер изображения,
 						потому что он изменяется для всего контекста
+						Масштабировать будем непосредственно здесь.
 					*/
-					this.width,
-					this.height
+					this.width * this.scaleX,
+					this.height * this.scaleY
 				)
 
 				// Отображает, где якорь?

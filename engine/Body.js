@@ -25,6 +25,45 @@
 			this.body.height = body.height || 1
 		}
 
+		/*
+			Геттер возвращает координаты x, y, ширину и высоту относительно body
+			(получим прямоугольник body в абсолютных величинах).
+		*/
+		get bodyRect () {
+			// Учитываем scale
+			return {
+				x: this.absoluteX + this.width * this.scaleX * this.body.x,
+				y: this.absoluteY + this.height * this.scaleY * this.body.y,
+				width: this.width * this.scaleX * this.body.width,
+				height: this.height * this.scaleY * this.body.height
+			}
+		}
+
+		// Геттер возвращает массив всех 4-х вершин.
+		get tops () {
+			// Прямоугольник
+			const { x, y, width, height } = this.bodyRect
+
+			return [
+				[x, y], // верхняя левая точка
+				[x + width, y], // верхняя правая точка
+				[x, y + height], // нижняя левая точка
+				[x + width, y + height], // нижняя правая точка
+			]
+		}
+
+		/*
+			Метод проверяет, находится ли точка с координатами x, y внутри тела или нет.
+			Возвращает true если находится внутри, иначе возвращает false.
+		*/
+		isInside (x, y) {
+			// Проверяем наличие точки x, y внутри этого прямоугольника:
+			const bodyRect = this.bodyRect
+
+			return bodyRect.x < x && x < bodyRect.x + bodyRect.width
+				&& bodyRect.y < y && y < bodyRect.y + bodyRect.height
+		}
+
 		draw (canvas, context) {
 			if (!this.visible) {
 				return
@@ -35,7 +74,7 @@
 			// - стоит для того чтобы вращение происходило против часовой стрелки
 			context.rotate(-this.rotation)
 
-			context.scale(this.scaleX, this.scaleY)
+			// context.scale(this.scaleX, this.scaleY)
 
 			context.drawImage(
 				// текстура, которую нужно отрисовать
@@ -53,12 +92,15 @@
 					Здесь не изменяем размер изображения,
 					потому что он изменяется для всего контекста
 				*/
-				this.width,
-				this.height
+				this.width * this.scaleX,
+				this.height * this.scaleY
 			)
 
 			// Если debug === true   рисуем точку:
 			if (this.debug) {
+				// Прямоугольник
+				const { x, y, width, height } = this.bodyRect
+
 				context.fillStyle = 'rgba(255, 0, 0, 0.3)'
 				// Отрисуем якорь:
 			/*	context.beginPath()
@@ -67,12 +109,13 @@
 
 				// Наложим красный цвет поверх спрайта:
 				context.beginPath()
-				context.rect(
-					this.absoluteX - this.x + this.body.x * this.width,
-					this.absoluteY - this.y + this.body.y * this.height,
-					this.width * this.body.width,
-					this.height * this.body.height
-				)
+				context.rect(x - this.x, y - this.y, width, height)
+				context.fill()
+
+				context.fillStyle = 'rgb(0, 255, 0)'
+				// Отрисуем якорь:
+				context.beginPath()
+				context.arc(0, 0, 4, 0, Math.PI * 2)
 				context.fill()
 			}
 
