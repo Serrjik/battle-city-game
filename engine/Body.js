@@ -98,7 +98,7 @@
 				// Прямоугольник
 				const { x, y, width, height } = this.bodyRect
 
-				context.fillStyle = 'rgba(255, 0, 0, 0.3)'
+				context.fillStyle = 'rgba(255, 0, 0, 0.2)'
 				// Отрисуем якорь:
 			/*	context.beginPath()
 				context.arc(0, 0, 3, 0, Math.PI * 2)
@@ -112,7 +112,7 @@
 				context.fillStyle = 'rgb(0, 255, 0)'
 				// Отрисуем якорь:
 				context.beginPath()
-				context.arc(0, 0, 4, 0, Math.PI * 2)
+				context.arc(0, 0, 3, 0, Math.PI * 2)
 				context.fill()
 			}
 

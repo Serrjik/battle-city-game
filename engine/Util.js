@@ -51,6 +51,26 @@
 			&& rect.y <= point.y && point.y <= rect.y + rect.height
 	}
 
+	// Метод удаляет элементы из массива.
+	Util.removeElements = function removeElements (array, ...elements) {
+		for (const element of array) {
+			if (array.includes(element)) {
+				const index = array.indexOf(element)
+				array.splice(index, 1)
+			}
+		}
+	}
+
+	// Метод возвращает сцену от заданного объекта.
+	Util.getScene = function getScene (obj) {
+		// Если объект отсутствует, или является экземпляром класса сцены:
+		if (!obj || obj instanceof GameEngine.Scene) {
+			return obj
+		}
+
+		return Util.getScene(obj, parent)
+	}
+
 	window.GameEngine = window.GameEngine || {}
 	window.GameEngine.Util = Util
 

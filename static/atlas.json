@@ -1,0 +1,248 @@
+{
+    "actions": {
+        "moveUp": {
+            "duration": 300,
+            "keys": [
+                ["tank", "up", "frame1"],
+                ["tank", "up", "frame2"]
+            ]
+        },
+
+        "moveDown": {
+            "duration": 300,
+            "keys": [
+                ["tank", "down", "frame1"],
+                ["tank", "down", "frame2"]
+            ]
+        },
+
+        "moveLeft": {
+            "duration": 300,
+            "keys": [
+                ["tank", "left", "frame1"],
+                ["tank", "left", "frame2"]
+            ]
+        },
+
+        "moveRight": {
+            "duration": 300,
+            "keys": [
+                ["tank", "right", "frame1"],
+                ["tank", "right", "frame2"]
+            ]
+        }
+    },
+
+    "frames": [
+        {
+            "keys": ["tank", "yellow", "type1", "up", "frame1"],
+            "x": 1,
+            "y": 2,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "yellow", "type1", "up", "frame2"],
+            "x": 17,
+            "y": 2,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "yellow", "type1", "left", "frame1"],
+            "x": 34,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "yellow", "type1", "left", "frame2"],
+            "x": 50,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "yellow", "type1", "down", "frame1"],
+            "x": 65,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "yellow", "type1", "down", "frame2"],
+            "x": 81,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "yellow", "type1", "right", "frame1"],
+            "x": 97,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "yellow", "type1", "right", "frame2"],
+            "x": 113,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "green", "type1", "up", "frame1"],
+            "x": 1,
+            "y": 130,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "green", "type1", "up", "frame2"],
+            "x": 17,
+            "y": 130,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "green", "type1", "left", "frame1"],
+            "x": 34,
+            "y": 129,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "green", "type1", "left", "frame2"],
+            "x": 50,
+            "y": 129,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "green", "type1", "down", "frame1"],
+            "x": 65,
+            "y": 129,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "green", "type1", "down", "frame2"],
+            "x": 81,
+            "y": 129,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "green", "type1", "right", "frame1"],
+            "x": 97,
+            "y": 129,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "green", "type1", "right", "frame2"],
+            "x": 113,
+            "y": 129,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "gray", "type1", "up", "frame1"],
+            "x": 129,
+            "y": 2,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "gray", "type1", "up", "frame2"],
+            "x": 145,
+            "y": 2,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "gray", "type1", "left", "frame1"],
+            "x": 162,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "gray", "type1", "left", "frame2"],
+            "x": 178,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "gray", "type1", "down", "frame1"],
+            "x": 193,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "gray", "type1", "down", "frame2"],
+            "x": 209,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "gray", "type1", "right", "frame1"],
+            "x": 225,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["tank", "gray", "type1", "right", "frame2"],
+            "x": 241,
+            "y": 1,
+            "width": 13,
+            "height": 13
+        },
+        {
+            "keys": ["wall", "brick"],
+            "x": 256,
+            "y": 0,
+            "width": 8,
+            "height": 8
+        },
+        {
+            "keys": ["eagle"],
+            "x": 304,
+            "y": 32,
+            "width": 16,
+            "height": 16
+        },
+        {
+            "keys": ["bullet", "up"],
+            "x": 323,
+            "y": 102,
+            "width": 3,
+            "height": 4
+        },
+        {
+            "keys": ["bullet", "left"],
+            "x": 330,
+            "y": 102,
+            "width": 4,
+            "height": 3
+        },
+        {
+            "keys": ["bullet", "down"],
+            "x": 339,
+            "y": 102,
+            "width": 3,
+            "height": 4
+        },
+        {
+            "keys": ["bullet", "right"],
+            "x": 346,
+            "y": 102,
+            "width": 4,
+            "height": 3
+        }
+    ]
+}

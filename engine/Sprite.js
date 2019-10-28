@@ -74,12 +74,12 @@
 			}
 
 			// Если такая анимация есть:
-			const { duration = Infinity, frames } = this.animations[name]
+			const { duration = Infinity, keys } = this.animations[name]
 
 			this.animation = name
-			this.frameDelay = duration / frames.length
+			this.frameDelay = duration / keys.length
 			// Обратиться к выбранной анимации и выбрать самый первый фрейм:
-			this.setFrameByKeys(...frames[0])
+			this.setFrameByKeys(...keys[0])
 		}
 
 		setFrameByKeys (...keys) {
@@ -129,10 +129,10 @@
 		// Метод изменяет координаты спрайта, опираясь на скорость.
 		tick (timestamp) {
 			if (this.animation && GameEngine.Util.delay(this.animation + this.uid, this.frameDelay)) {
-				const { frames } = this.animations[this.animation]
+				const { keys } = this.animations[this.animation]
 
-				this.frameNumber = (this.frameNumber + 1) % frames.length
-				this.setFrameByKeys(...frames[this.frameNumber])
+				this.frameNumber = (this.frameNumber + 1) % keys.length
+				this.setFrameByKeys(...keys[this.frameNumber])
 
 				/*
 					Каждый раз, перед тем как будет обновляться фрейм,

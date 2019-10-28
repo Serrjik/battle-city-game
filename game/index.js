@@ -3,7 +3,9 @@
 	чтобы не писать каждый раз перед Loader'ом - GameEngine (деструктуризация).
 	Не нужно будет писать GameEngine.Loader
 */
-const { Body, Game, Scene, ArcadePhysics } = GameEngine
+const DEBUG_MODE = true
+
+const { Body, Game, Scene, ArcadePhysics, Util } = GameEngine
 
 // Создание сцены:
 const mainScene = new Scene({
@@ -20,8 +22,8 @@ const mainScene = new Scene({
 		которые понадобятся в дальнейшем (будут использованы в сцене).
 	*/
 	loading (loader) {
-		loader.addImage('man', 'static/man.png')
-		loader.addJson('manAtlas', 'static/manAtlas.json')
+		loader.addImage('spriteSheet', 'static/Battle City Sprites.png')
+		loader.addJson('atlas', 'static/atlas.json')
 	},
 
 	/*
@@ -29,22 +31,31 @@ const mainScene = new Scene({
 		Инициализирует сцену (создает объекты, спрайты, рисунки, тексты -
 		всё, что нужно будет использовать в дальнейшем).
 	*/
+
 	init () {
 		// Получить текстуру:
-		Man.texture = this.parent.loader.getImage('man')
-		Man.atlas = this.parent.loader.getJson('manAtlas')
+		Tank.texture = this.parent.loader.getImage('spriteSheet')
+		// Поличить атлас:
+		Tank.atlas = this.parent.loader.getJson('atlas')
+
+		// Получить текстуру:
+		Bullet.texture = this.parent.loader.getImage('spriteSheet')
+		// Поличить атлас:
+		Bullet.atlas = this.parent.loader.getJson('atlas')
 
 		// Аркада будет на уровне сцены.
 		this.arcadePhysics = new ArcadePhysics
 
 		// Создать спрайт (пока будет не отрисован):
-		this.man1 = new Man({
-			x: this.parent.renderer.canvas.width / 2 - 100,
-			y: this.parent.renderer.canvas.height / 2
+		this.tank1 = new Tank({
+			debug: DEBUG_MODE,
+			x: this.parent.renderer.canvas.width / 2,
+			y: this.parent.renderer.canvas.height / 2 + 100
 		})
 
-		this.man2 = new Man({
-			x: this.parent.renderer.canvas.width / 2 + 100,
+		this.tank2 = new Tank({
+			debug: DEBUG_MODE,
+			x: this.parent.renderer.canvas.width / 2,
 			y: this.parent.renderer.canvas.height / 2
 		})
 
@@ -58,44 +69,78 @@ const mainScene = new Scene({
 			первый дочерний элемент, второй и т.д.
 			Затем отрисовывается следующий контейнер с элементами и т.д.
 		*/
-		this.add(this.man1, this.man2)
-		// Добавить объекты в аркаду (теперь к ним применится аркадная физика).
-		this.arcadePhysics.add(this.man1, this.man2)
-
-		// Подписаться на событие frameChange. this будет генерировать это событие.
-		/*this.man.on('frameChange', man => {
-			console.log('frameChange')
-		})*/
-
-		// this.man.setFrameByKeys('man', 'down', 'frame1')
-		// this.man.width = this.man.frame.width
-		// this.man.height = this.man.frame.height
-
-		/*
-			Если точка всегда будет на этой позиции, this можно не писать.
-			Задать через const.
-			Зато будет сложно достучаться до неё из update().
-		*/
-		/*const point = new Point({
-			// Установим координаты как у спрайта:
-			x: this.til.x,
-			y: this.til.y
-		})*/
-
-		/*
-			Если линия всегда будет на этой позиции, this можно не писать.
-			Задать через const.
-			Зато будет сложно достучаться до неё из update().
-		*/
-		/*const line = new Line({
-			x1: 0,
-			y1: 0,
-			x2: this.parent.renderer.canvas.width,
-			y2: this.parent.renderer.canvas.height
-		})*/
-
-		// graphicContainer.add(point, line)
+		this.add(this.tank1, this.tank2)
+		// Добавить объект в аркаду (теперь к нему применится аркадная физика).
+		this.arcadePhysics.add(this.tank1, this.tank2)
 	},
+
+	// init () {
+	// 	// Получить текстуру:
+	// 	Man.texture = this.parent.loader.getImage('man')
+	// 	Man.atlas = this.parent.loader.getJson('manAtlas')
+
+	// 	// Аркада будет на уровне сцены.
+	// 	this.arcadePhysics = new ArcadePhysics
+
+	// 	// Создать спрайт (пока будет не отрисован):
+	// 	this.man1 = new Man({
+	// 		x: this.parent.renderer.canvas.width / 2 - 100,
+	// 		y: this.parent.renderer.canvas.height / 2
+	// 	})
+
+	// 	this.man2 = new Man({
+	// 		x: this.parent.renderer.canvas.width / 2 + 100,
+	// 		y: this.parent.renderer.canvas.height / 2
+	// 	})
+
+	// 	/*
+	// 		Добавить спрайт в сцену (теперь он отрисуется), точку и линию:
+	// 		Имеет значение порядок подключения
+	// 		(то, что подключено позже, отрисуется позже
+	// 		и закроет собой отрисованное ранее).
+	// 		Важна очередность.
+	// 		Сначала рисуется контейнер, затем отрисовываются
+	// 		первый дочерний элемент, второй и т.д.
+	// 		Затем отрисовывается следующий контейнер с элементами и т.д.
+	// 	*/
+	// 	this.add(this.man1, this.man2)
+	// 	// Добавить объекты в аркаду (теперь к ним применится аркадная физика).
+	// 	this.arcadePhysics.add(this.man1, this.man2)
+
+	// 	// Подписаться на событие frameChange. this будет генерировать это событие.
+	// 	/*this.man.on('frameChange', man => {
+	// 		console.log('frameChange')
+	// 	})*/
+
+	// 	// this.man.setFrameByKeys('man', 'down', 'frame1')
+	// 	// this.man.width = this.man.frame.width
+	// 	// this.man.height = this.man.frame.height
+
+	// 	/*
+	// 		Если точка всегда будет на этой позиции, this можно не писать.
+	// 		Задать через const.
+	// 		Зато будет сложно достучаться до неё из update().
+	// 	*/
+	// 	/*const point = new Point({
+	// 		// Установим координаты как у спрайта:
+	// 		x: this.til.x,
+	// 		y: this.til.y
+	// 	})*/
+
+	// 	/*
+	// 		Если линия всегда будет на этой позиции, this можно не писать.
+	// 		Задать через const.
+	// 		Зато будет сложно достучаться до неё из update().
+	// 	*/
+	// 	/*const line = new Line({
+	// 		x1: 0,
+	// 		y1: 0,
+	// 		x2: this.parent.renderer.canvas.width,
+	// 		y2: this.parent.renderer.canvas.height
+	// 	})*/
+
+	// 	// graphicContainer.add(point, line)
+	// },
 
 	/*
 		Функция будет вызываться перед удалением сцены
@@ -115,52 +160,87 @@ const mainScene = new Scene({
 		*/
 	// },
 
-	update (timestamp) {
-		// Вытащить keyboard, чтобы не писать каждый раз длинный путь:
+	update () {
 		const { keyboard } = this.parent
+		this.tank1.movementUpdate(keyboard)
 
-		this.man1.velocity.x = 0
-		this.man1.velocity.y = 0
+		// Выстрел должен происходить не чаще, чем задано в BULLET_TIMEOUT.
+		if (keyboard.space && Util.delay('tank' + this.tank1.uid, Tank.BULLET_TIMEOUT)) {
+			const bullet = new Bullet({
+				debug: DEBUG_MODE,
+				x: this.tank1.x,
+				y: this.tank1.y
+			})
 
-		this.man2.velocity.x = 0
-		this.man2.velocity.y = 0
+			// Запомнить, что эта пуля принадлежит непосредственно породившему её танку.
+			this.tank1.bullets.push(bullet)
+			bullet.tank = this.tank1
 
-		// Что делать, если нажата клавиша Влево (KeyA):
-		if (keyboard.arrowLeft) {
-			this.man1.velocity.x = -2
-			// Если анимация не соответствует направлению, зададим её правильно:
-			if (this.man1.animation !== 'moveLeft') {
-				this.man1.startAnimation('moveLeft')
+			// Скорость пули рассчитывается в зависимости от анимации.
+			if (this.tank1.animation === 'moveUp') {
+				bullet.velocity.y = -Bullet.NORMAL_SPEED
+				bullet.setFrameByKeys('bullet', 'up')
 			}
+
+			// Добавить пулю в сцену.
+			this.add(bullet)
+			// Добавить пулю в аркадную физику.
+			this.arcadePhysics.add(bullet)
 		}
 
-		// Что делать, если нажата клавиша Вправо (KeyD):
-		if (keyboard.arrowRight) {
-			this.man1.velocity.x = 2
-		}
-
-		// Что делать, если нажата клавиша Вверх:
-		else if (keyboard.arrowUp) {
-			this.man1.velocity.y = -2
-		}
-
-		// Что делать, если нажата клавиша Вниз:
-		else if (keyboard.arrowDown) {
-			this.man1.velocity.y = 2
-
-			// Если анимация не соответствует направлению, зададим её правильно:
-			if (this.man1.animation !== 'moveDown') {
-				this.man1.startAnimation('moveDown')
-			}
-		}
-
-		else if (this.man1.animation === 'moveDown') {
-			this.man1.startAnimation('stayDown')
-		}
-
-		// В конце каждого события нужно проводить процессинг аркадной физики.
+		/*
+			В конце каждого события нужно проводить
+			процессинг аркадной физики на случай столкновений объектов.
+		*/
 		this.arcadePhysics.processing()
 	}
+
+	// update (timestamp) {
+	// 	// Вытащить keyboard, чтобы не писать каждый раз длинный путь:
+	// 	const { keyboard } = this.parent
+
+	// 	this.man1.velocity.x = 0
+	// 	this.man1.velocity.y = 0
+
+	// 	this.man2.velocity.x = 0
+	// 	this.man2.velocity.y = 0
+
+	// 	// Что делать, если нажата клавиша Влево (KeyA):
+	// 	if (keyboard.arrowLeft) {
+	// 		this.man1.velocity.x = -2
+	// 		// Если анимация не соответствует направлению, зададим её правильно:
+	// 		if (this.man1.animation !== 'moveLeft') {
+	// 			this.man1.startAnimation('moveLeft')
+	// 		}
+	// 	}
+
+	// 	// Что делать, если нажата клавиша Вправо (KeyD):
+	// 	if (keyboard.arrowRight) {
+	// 		this.man1.velocity.x = 2
+	// 	}
+
+	// 	// Что делать, если нажата клавиша Вверх:
+	// 	else if (keyboard.arrowUp) {
+	// 		this.man1.velocity.y = -2
+	// 	}
+
+	// 	// Что делать, если нажата клавиша Вниз:
+	// 	else if (keyboard.arrowDown) {
+	// 		this.man1.velocity.y = 2
+
+	// 		// Если анимация не соответствует направлению, зададим её правильно:
+	// 		if (this.man1.animation !== 'moveDown') {
+	// 			this.man1.startAnimation('moveDown')
+	// 		}
+	// 	}
+
+	// 	else if (this.man1.animation === 'moveDown') {
+	// 		this.man1.startAnimation('stayDown')
+	// 	}
+
+	// 	// В конце каждого события нужно проводить процессинг аркадной физики.
+	// 	this.arcadePhysics.processing()
+	// }
 })
 
 const game = new Game({
