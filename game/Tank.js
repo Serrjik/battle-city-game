@@ -33,9 +33,20 @@ class Tank extends GameEngine.Body {
 
 		this.on('collision', (a, b) => {
 			// Если b - пуля, и она принадлежит этому танку:
-			if (b instanceof Bullet && this.bullets.includes(b)) {
-				// Игнорировать столкновения со своими собственными пулями.
-				return
+			if (b instanceof Bullet) {
+				// Если пуля b принадлежит этому танку:
+				if (this.bullets.includes(b)) {
+					// Игнорировать столкновения со своими собственными пулями.
+					return
+				}
+
+				// Если пуля столкнулась не с породившим её танком:
+				else {
+					// Сделать этот танк невидимым:
+					this.visible = false
+					// Удалить этот танк из аркадной физики:
+					Util.getScene(this).arcadePhysics.remove(this)
+				}
 			}
 
 			a.velocity.x = 0

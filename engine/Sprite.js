@@ -42,8 +42,8 @@
 			this.frame = {
 				x: frame.x || 0,
 				y: frame.y || 0,
-				width: frame.width || texture.width,
-				height: frame.height || texture.height
+				width: frame.width || texture ? texture.width : 0,
+				height: frame.height || texture ? texture.height : 0
 			}
 
 			if (args.width === undefined) {
@@ -166,26 +166,29 @@
 				*/
 				// context.scale(this.scaleX, this.scaleY)
 
-				context.drawImage(
-					// текстура, которую нужно отрисовать
-					this.texture,
-					// source-координаты (координаты участка изображения,
-					// который нужно отобразить)
-					this.frame.x,
-					this.frame.y,
-					this.frame.width,
-					this.frame.height,
-					// координаты участка, где нужно отобразить
-					this.absoluteX - this.x,
-					this.absoluteY - this.y,
-					/*
-						Здесь не изменяем размер изображения,
-						потому что он изменяется для всего контекста
-						Масштабировать будем непосредственно здесь.
-					*/
-					this.width * this.scaleX,
-					this.height * this.scaleY
-				)
+				// Рисовать картинку в случае, если текстура есть.
+				if (this.texture) {
+					context.drawImage(
+						// текстура, которую нужно отрисовать
+						this.texture,
+						// source-координаты (координаты участка изображения,
+						// который нужно отобразить)
+						this.frame.x,
+						this.frame.y,
+						this.frame.width,
+						this.frame.height,
+						// координаты участка, где нужно отобразить
+						this.absoluteX - this.x,
+						this.absoluteY - this.y,
+						/*
+							Здесь не изменяем размер изображения,
+							потому что он изменяется для всего контекста
+							Масштабировать будем непосредственно здесь.
+						*/
+						this.width * this.scaleX,
+						this.height * this.scaleY
+					)
+				}
 
 				// Отображает, где якорь?
 				/*context.beginPath()

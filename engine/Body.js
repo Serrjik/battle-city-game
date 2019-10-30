@@ -16,6 +16,9 @@
 			// Если поле debug будет true, будем видеть тело спрайта.
 			this.debug = args.debug || false
 
+			// Если static = true, то тело не проверяется на столкновение.
+			this.static = args.static || false
+
 			this.body = {}
 			// x и y - смещения относительно осей x и y.
 			this.body.x = body.x || 0

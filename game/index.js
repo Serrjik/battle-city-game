@@ -72,6 +72,48 @@ const mainScene = new Scene({
 		this.add(this.tank1, this.tank2)
 		// Добавить объект в аркаду (теперь к нему применится аркадная физика).
 		this.arcadePhysics.add(this.tank1, this.tank2)
+
+		/*
+			Нарисовать невидимые стены (тела (Body) без текстур)
+			по периметру игрового поля,
+			но добавить их в аркаду,
+			чтобы был невозможен выход за пределы игрового поля.
+		*/
+		// Стена сверху.
+		this.arcadePhysics.add(new Body(null, {
+			static: true,
+			x: -10,
+			y: -10,
+			width: this.parent.renderer.canvas.width + 20,
+			height: 10
+		}))
+
+		// Стена снизу.
+		this.arcadePhysics.add(new Body(null, {
+			static: true,
+			x: -10,
+			y: this.parent.renderer.canvas.height,
+			width: this.parent.renderer.canvas.width + 20,
+			height: 10
+		}))
+
+		// Стена слева.
+		this.arcadePhysics.add(new Body(null, {
+			static: true,
+			x: -10,
+			y: -10,
+			width: 10,
+			height: this.parent.renderer.canvas.height + 20
+		}))
+
+		// Стена справа.
+		this.arcadePhysics.add(new Body(null, {
+			static: true,
+			x: this.parent.renderer.canvas.width,
+			y: -10,
+			width: 10,
+			height: this.parent.renderer.canvas.height + 20
+		}))
 	},
 
 	// init () {
@@ -193,6 +235,19 @@ const mainScene = new Scene({
 			процессинг аркадной физики на случай столкновений объектов.
 		*/
 		this.arcadePhysics.processing()
+
+		/*
+			Теперь, после проверки всех соударений,
+			пройти по всем пулям всех танков.
+			Удалить те пули, у которых флаг toDestroy = true.
+		*/
+		for (const tank of [this.tank1, this.tank2]) {
+			for (const bullet of tank.bullets) {
+				if (bullet.toDestroy) {
+					bullet.destroy()
+				}
+			}
+		}
 	}
 
 	// update (timestamp) {

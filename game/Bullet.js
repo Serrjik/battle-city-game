@@ -25,6 +25,7 @@ class Bullet extends GameEngine.Body {
 		super(Bullet.texture, args)
 
 		this.tank = null // Какому танку принадлежит пуля.
+		this.toDestroy = false // Флаг - нужно ли удалить конкретную пулю.
 
 		this.setFramesCollection(Bullet.atlas.frames)
 		this.setAnimationsCollection(Bullet.atlas.actions)
@@ -37,7 +38,14 @@ class Bullet extends GameEngine.Body {
 			}
 
 			// Иначе уничтожить пулю.
-			this.destroy()
+			// this.destroy()
+			/*
+				Возможно пуля удалит сама себя из танка,
+				тогда событие столкновения танка просто не сработает.
+				Поэтому нельзя удалять пулю до того, как произойдет другое событие.
+				Установить флаг пуле, что её нужно удалить.
+			*/
+			this.toDestroy = true
 		})
 	}
 

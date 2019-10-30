@@ -68,7 +68,7 @@
 			return obj
 		}
 
-		return Util.getScene(obj, parent)
+		return Util.getScene(obj.parent)
 	}
 
 	window.GameEngine = window.GameEngine || {}
