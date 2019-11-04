@@ -71,6 +71,55 @@
 		return Util.getScene(obj.parent)
 	}
 
+	/*
+		Функция tween позволяет делать процессы в замедленном действии.
+		Вызывается каждые несколько миллисекунд в течение некоторого времени.
+	*/
+	Util.tween = function tween (params) {
+		let { target, duration, processer } = params
+
+		if (!target) {
+			throw new Error('Tween without target object.')
+		}
+
+		// Момент создания - сколько времени прошло с самого старта.
+		let createAt = Date.now()
+		let context = {}
+		let stopped = false
+
+		let tweenFunction = () => {
+			// Процент (не может быть более 100%)
+			const percent = Math.min((Date.now() - createAt) / duration, 1)
+			processer(target, percent, context)
+
+			if (percent >= 1) {
+				stopped = true
+				context = null
+				target = null
+				processer = null
+				clearInterval(intervalFlag)
+			}
+		}
+
+		tweenFunction()
+
+		// Внутри setInterval функция, которая будет вызываться с максимальной частотой.
+		const intervalFlag = setInterval(tweenFunction)
+
+		return () => {
+			if (stopped) {
+				return
+			}
+
+			stopped = true
+			context = null
+			target = null
+			processer = null
+			tweenFunction = null
+			clearInterval(intervalFlag)
+		}
+	}
+
 	window.GameEngine = window.GameEngine || {}
 	window.GameEngine.Util = Util
 

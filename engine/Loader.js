@@ -9,12 +9,14 @@
 			// Объекты, которые нужно загрузить:
 			this.loadOrder = {
 				images: [],
-				jsons: []
+				jsons: [],
+				sounds: []
 			}
 			// Ресурсы:
 			this.resources = {
-				images: [],
-				jsons: []
+				images: {},
+				jsons: {},
+				sounds: {}
 			}
 		}
 
@@ -27,6 +29,10 @@
 			this.loadOrder.jsons.push({ name, address })
 		}
 
+		addSound (name, src) {
+			this.loadOrder.sounds.push({ name, src })
+		}
+
 		// Метод возвращает запрашиваемый ресурс
 		getImage (name) {
 			return this.resources.images[name]
@@ -35,6 +41,11 @@
 		// Метод возвращает запрашиваемый ресурс
 		getJson (name) {
 			return this.resources.jsons[name]
+		}
+
+		// Метод возвращает запрашиваемый ресурс
+		getSound (name) {
+			return this.resources.sounds[name]
 		}
 
 		// callback - функция, которая будет вызвана, когда все изображения и JSON-файлы будут загружены
@@ -50,7 +61,10 @@
 					.then(image => {
 						this.resources.images[name] = image
 
-						// Здесь из loadOrder удаляется запись о необходимости загрузки изображения
+						/*
+							Здесь из очереди loadOrder удаляется
+							запись о необходимости загрузки изображения
+						*/
 						if (this.loadOrder.images.includes(imageData)) {
 							const index = this.loadOrder.images.indexOf(imageData)
 							this.loadOrder.images.splice(index, 1)
@@ -69,7 +83,10 @@
 					.then(json => {
 						this.resources.jsons[name] = json
 
-						// Здесь из loadOrder удаляется запись о необходимости загрузки изображения
+						/*
+							Здесь из очереди loadOrder удаляется
+							запись о необходимости загрузки изображения
+						*/
 						if (this.loadOrder.jsons.includes(jsonData)) {
 							const index = this.loadOrder.jsons.indexOf(jsonData)
 							this.loadOrder.jsons.splice(index, 1)
@@ -78,6 +95,31 @@
 
 				promises.push(promise)
 			}
+
+			// Пройдем по всем audio-файлам, которые нужно загрузить
+			for (const soundData of this.loadOrder.sounds) {
+				const { name, src } = soundData
+
+				const promise = Loader
+					.loadSound(src)
+					.then(audio => {
+						this.resources.sounds[name] = audio
+
+						/*
+							Здесь из очереди loadOrder удаляется
+							запись о необходимости загрузки изображения
+						*/
+						if (this.loadOrder.sounds.includes(soundData)) {
+							const index = this.loadOrder.sounds.indexOf(soundData)
+							this.loadOrder.sounds.splice(index, 1)
+						}
+					})
+
+				promises.push(promise)
+			}
+
+			// promise скажет что элемент выполнен через определенное время.
+			// promises.push(new Promise(resolve => setTimeout(resolve, 1000)))
 
 			// Когда загрузятся все изображения и JSON-файлы
 			Promise.all(promises).then(callback)
@@ -123,6 +165,30 @@
 			})
 		}
 
+		static loadSound (src) {
+			return new Promise((resolve, reject) => {
+				try {
+					const audio = new Audio
+					// audio.addEventListener('canplaythrough', () => waiter('canplaythrough'))
+					// audio.addEventListener('ended', () => waiter('ended'))
+					audio.src = src
+
+					// let i = 0
+					// function waiter (event) {
+					// 	console.log(event)
+					// 	i++
+
+					// 	if (i >= 2) {
+					// 		resolve(audio)
+					// 	}
+					// }
+				}
+
+				catch (error) {
+					reject(error)
+				}
+			})
+		}
 	}
 
 	/*

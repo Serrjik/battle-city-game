@@ -5,14 +5,14 @@
 */
 const DEBUG_MODE = true
 
-const { Body, Game, Scene, ArcadePhysics, Util } = GameEngine
+const { Body, Game, Scene, ArcadePhysics, Util, Sprite } = GameEngine
 
 // Создание сцены:
 const mainScene = new Scene({
 	// Имя сцены:
 	name: 'mainScene',
 	// Автоматически стартовать сцену:
-	autoStart: true,
+	// autoStart: true,
 	/*
 		Функции loading(), init(), update() будут вызываться в контексте экземпляра класса Scene.
 		Потому что в конструкторе значение параметра функции присваивается вместе с bind(this).
@@ -24,6 +24,7 @@ const mainScene = new Scene({
 	loading (loader) {
 		loader.addImage('spriteSheet', 'static/Battle City Sprites.png')
 		loader.addJson('atlas', 'static/atlas.json')
+		// loader.addSound('start', 'static/sound/stage_start.ogg')
 	},
 
 	/*
@@ -33,6 +34,13 @@ const mainScene = new Scene({
 	*/
 
 	init () {
+		// Получить аудио:
+		// const startSound = this.parent.loader.getSound('start')
+		// console.log({ startSound })
+		// Запустить проигрывание звука.
+		// startSound.play().then().catch(error => {})
+		// game.loader.resources.sounds.start.play()
+
 		// Получить текстуру:
 		Tank.texture = this.parent.loader.getImage('spriteSheet')
 		// Поличить атлас:
@@ -298,6 +306,67 @@ const mainScene = new Scene({
 	// }
 })
 
+const intro = new Intro({
+	autoStart: true,
+	name: 'introScene',
+
+	loading (loader) {
+		loader.addImage('intro', 'static/intro.png')
+		// loader.addSound('intro', 'static/sound/stage_start.ogg')
+	},
+
+	init () {
+		const { loader } = this.parent
+
+		// Запросить ресурс и добавить в сцену.
+		this.image = new Sprite(loader.getImage('intro'), {
+			x: 0,
+			y: this.parent.renderer.canvas.height,
+			width: this.parent.renderer.canvas.width,
+			height: this.parent.renderer.canvas.height
+		})
+
+		this.add(this.image)
+
+		this.imageTweenStopper = Util.tween({
+			// target должен изменить своё поле y за время duration.
+			target: this.image,
+			duration: 3500,
+			// processer - функция, которая будет вызываться в течение времени duration.
+			processer (target, percent, context) {
+				if (percent === 0) {
+					// Запустить проигрывание звука.
+					// loader.getSound('intro').play()
+					context.y = target.y
+				}
+				target.y = context.y * (1 - percent)
+			}
+			/*fields: {
+				y: 0,
+				x: {
+					finish: 100,
+					duration: 1000
+				}
+			}*/
+		})
+	},
+
+	update (timestamp) {
+		const { keyboard } = this.parent
+
+		// По нажатию space картинка мгновенно станет на место.
+		if (keyboard.space && this.imageTweenStopper && this.image.y !== 0) {
+			this.imageTweenStopper()
+			delete this.imageTweenStopper
+			this.image.y = 0
+		}
+
+		else if (keyboard.space) {
+
+		}
+	}
+})
+
 const game = new Game({
 	// куда монтировать элемент (куда установить игру) - точка монтирования
 	el: document.body,
@@ -314,5 +383,5 @@ const game = new Game({
 		Чтобы запустить её снова, нужно будет создать её новый экземпляр,
 		добавить его в game, потом заново запустить.
 	*/
-	scenes: [mainScene] // массив сцен (сюда передаем сцены)
+	scenes: [intro, mainScene] // массив сцен (сюда передаем сцены)
 })
