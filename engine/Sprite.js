@@ -18,6 +18,8 @@
 
 			// текстура
 			this.texture = texture
+			// Массив ключей, которые будут подмешиваться автоматически.
+			this.keysDefault = args.keysDefault || []
 
 			this.frames = []
 			// this.frames = args.frames || []
@@ -28,6 +30,7 @@
 			// this.animations = []
 			this.animations = {}
 			this.animation = '' // Название анимации, которая будет действовать
+			this.animationPaused = false
 
 			/*
 				Скорость.
@@ -82,8 +85,19 @@
 			this.setFrameByKeys(...keys[0])
 		}
 
+		// Метод останавливает анимацию.
+		pauseAnimation () {
+			this.animationPaused = true
+		}
+
+		// Метод возобновлет анимацию.
+		resumeAnimation () {
+			this.animationPaused = false
+		}
+
 		setFrameByKeys (...keys) {
-			const frame = this.getFrameByKeys(...keys)
+
+			const frame = this.getFrameByKeys(...keys, ...this.keysDefault)
 
 			// Если фрейм не был найден:
 			if (!frame) {
@@ -128,7 +142,7 @@
 
 		// Метод изменяет координаты спрайта, опираясь на скорость.
 		tick (timestamp) {
-			if (this.animation && GameEngine.Util.delay(this.animation + this.uid, this.frameDelay)) {
+			if (!this.animationPaused && this.animation && GameEngine.Util.delay(this.animation + this.uid, this.frameDelay)) {
 				const { keys } = this.animations[this.animation]
 
 				this.frameNumber = (this.frameNumber + 1) % keys.length

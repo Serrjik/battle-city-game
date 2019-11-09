@@ -30,9 +30,9 @@ class Bullet extends GameEngine.Body {
 		this.setFramesCollection(Bullet.atlas.frames)
 		this.setAnimationsCollection(Bullet.atlas.actions)
 
-		this.on('collision', (a, b) => {
-			// Если b - танк, который породил пулю:
-			if (b === this.tank) {
+		this.on('collision', a => {
+			// Если a - танк, который породил пулю:
+			if (a === this.tank) {
 				// Игнорировать столкновения со своим собственным танком.
 				return
 			}

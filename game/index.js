@@ -41,18 +41,18 @@ const mainScene = new Scene({
 		// startSound.play().then().catch(error => {})
 		// game.loader.resources.sounds.start.play()
 
-		// Получить текстуру:
+		// Получить текстуру танка:
 		Tank.texture = this.parent.loader.getImage('spriteSheet')
 		// Поличить атлас:
 		Tank.atlas = this.parent.loader.getJson('atlas')
 
-		// Получить текстуру:
+		// Получить текстуру пули:
 		Bullet.texture = this.parent.loader.getImage('spriteSheet')
 		// Поличить атлас:
 		Bullet.atlas = this.parent.loader.getJson('atlas')
 
-		// Аркада будет на уровне сцены.
-		this.arcadePhysics = new ArcadePhysics
+		// // Аркада будет на уровне сцены.
+		// this.arcadePhysics = new ArcadePhysics
 
 		// Создать спрайт (пока будет не отрисован):
 		this.tank1 = new Tank({
@@ -306,67 +306,6 @@ const mainScene = new Scene({
 	// }
 })
 
-const intro = new Intro({
-	autoStart: true,
-	name: 'introScene',
-
-	loading (loader) {
-		loader.addImage('intro', 'static/intro.png')
-		// loader.addSound('intro', 'static/sound/stage_start.ogg')
-	},
-
-	init () {
-		const { loader } = this.parent
-
-		// Запросить ресурс и добавить в сцену.
-		this.image = new Sprite(loader.getImage('intro'), {
-			x: 0,
-			y: this.parent.renderer.canvas.height,
-			width: this.parent.renderer.canvas.width,
-			height: this.parent.renderer.canvas.height
-		})
-
-		this.add(this.image)
-
-		this.imageTweenStopper = Util.tween({
-			// target должен изменить своё поле y за время duration.
-			target: this.image,
-			duration: 3500,
-			// processer - функция, которая будет вызываться в течение времени duration.
-			processer (target, percent, context) {
-				if (percent === 0) {
-					// Запустить проигрывание звука.
-					// loader.getSound('intro').play()
-					context.y = target.y
-				}
-				target.y = context.y * (1 - percent)
-			}
-			/*fields: {
-				y: 0,
-				x: {
-					finish: 100,
-					duration: 1000
-				}
-			}*/
-		})
-	},
-
-	update (timestamp) {
-		const { keyboard } = this.parent
-
-		// По нажатию space картинка мгновенно станет на место.
-		if (keyboard.space && this.imageTweenStopper && this.image.y !== 0) {
-			this.imageTweenStopper()
-			delete this.imageTweenStopper
-			this.image.y = 0
-		}
-
-		else if (keyboard.space) {
-
-		}
-	}
-})
-
 const game = new Game({
 	// куда монтировать элемент (куда установить игру) - точка монтирования
 	el: document.body,
@@ -383,5 +322,8 @@ const game = new Game({
 		Чтобы запустить её снова, нужно будет создать её новый экземпляр,
 		добавить его в game, потом заново запустить.
 	*/
-	scenes: [intro, mainScene] // массив сцен (сюда передаем сцены)
+	scenes: [ // массив сцен (сюда передаем сцены)
+		new Intro({ autoStart: false }), // new Intro(), new Party() можно писать без круглых скобок
+		new Party({ autoStart: true })
+	]
 })
