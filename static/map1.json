@@ -1,0 +1,18 @@
+{
+    "fieldSize": 50,
+    "map": [
+        [null, "enemy", null, null, null, "enemy", null, null, null, "enemy", null, null, null],
+        [null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null],
+        [null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null],
+        [null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null],
+        [null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null],
+        [null, null, null, null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null, null, null, null],
+        [null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null],
+        [null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null],
+        [null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null],
+        [null, "brick", null, "brick", null, "brick", "brick", "brick", null, "brick", null, "brick", null],
+        [null, null, null, null, "tank1", "brick", "eagle", "brick", "tank2", null, null, null, null]
+    ]
+}
