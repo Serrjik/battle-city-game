@@ -22,7 +22,7 @@
 			// stage - коллекция всех дочерних элементов Сцены
 			this.stage = this.displayObjects
 			// Игра, в которой находится сцена:
-			this.game = null
+			// this.game = null
 
 			if (args.loading) {
 				/*

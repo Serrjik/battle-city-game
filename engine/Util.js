@@ -53,7 +53,7 @@
 
 	// Метод удаляет элементы из массива.
 	Util.removeElements = function removeElements (array, ...elements) {
-		for (const element of array) {
+		for (const element of elements) {
 			if (array.includes(element)) {
 				const index = array.indexOf(element)
 				array.splice(index, 1)

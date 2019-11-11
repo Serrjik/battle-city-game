@@ -58,10 +58,11 @@ class Bullet extends GameEngine.Body {
 		delete this.tank
 
 		// Получить сцену, в которой находится пуля.
-		const scene = Util.getScene(this)
+		const scene = this.scene
+		
 		// Если пуля сталкивается с чем-то ещё, то должна уничтожить себя.
-		scene.remove(this)
 		scene.arcadePhysics.remove(this)
+		scene.remove(this)
 	}
 }
 

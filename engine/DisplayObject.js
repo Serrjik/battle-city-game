@@ -44,6 +44,15 @@
 			}
 		}
 
+		// Геттер возвращает сцену, в которой находится объект.
+		get scene () {
+			return Util.getScene(this)
+		}
+
+		get game () {
+			return this.scene.parent
+		}
+
 		// Геттер - координата X левого верхнего угла
 		get absoluteX () {
 			// здесь не используем scale, потому что он используется
@@ -68,6 +77,26 @@
 		set absoluteY (value) {
 			this.y = value + this.anchorY * this.height * this.scaleY
 			return value
+		}
+
+		// Геттер - координата x центра.
+		get centerX () {
+			return this.absoluteX + this.width / 2 * this.scaleX
+		}
+
+		// Сеттер - координата x центра.
+		set centerX (value) {
+			return this.absoluteX = value - this.width / 2
+		}
+
+		// Геттер - координата y центра.
+		get centerY () {
+			return this.absoluteY + this.height / 2 * this.scaleY
+		}
+
+		// Сеттер - координата y центра.
+		set centerY (value) {
+			return this.absoluteY = value - this.height / 2
 		}
 
 		// Метод задает значение 2 полям (масштабы по осям X, Y)

@@ -6,9 +6,7 @@
 class Tank extends GameEngine.Body {
 	constructor (originalArgs = {}) {
 		const args = Object.assign({
-			scale: 4,
-			anchorX: 0.5,
-			anchorY: 0.5,
+			scale: 3.5,
 			// Ключи, которые автоматически будут подмешиваться в спрайт.
 			keysDefault: ['yellow', 'type1'],
 			debug: DEBUG_MODE
@@ -33,11 +31,12 @@ class Tank extends GameEngine.Body {
 		// С какого спрайта начать анимацию.
 		this.startAnimation('moveUp')
 
-		this.on('collision', (a, b) => {
-			// Если b - пуля, и она принадлежит этому танку:
-			if (b instanceof Bullet) {
-				// Если пуля b принадлежит этому танку:
-				if (this.bullets.includes(b)) {
+		// Если произошло столкновение с объектом a:
+		this.on('collision', a => {
+			// Если a - пуля, и она принадлежит этому танку:
+			if (a instanceof Bullet) {
+				// Если пуля a принадлежит этому танку:
+				if (this.bullets.includes(a)) {
 					// Игнорировать столкновения со своими собственными пулями.
 					return
 				}
@@ -47,12 +46,12 @@ class Tank extends GameEngine.Body {
 					// Сделать этот танк невидимым:
 					this.visible = false
 					// Удалить этот танк из аркадной физики:
-					Util.getScene(this).arcadePhysics.remove(this)
+					this.scene.arcadePhysics.remove(this)
 				}
 			}
 
-			a.velocity.x = 0
-			a.velocity.y = 0
+			this.velocity.x = 0
+			this.velocity.y = 0
 		})
 	}
 
@@ -105,8 +104,8 @@ class Tank extends GameEngine.Body {
 			// Создать пулю.
 			const bullet = new Bullet({
 				debug: DEBUG_MODE,
-				x: this.x,
-				y: this.y
+				x: this.centerX,
+				y: this.centerY
 			})
 
 			// Добавить пулю в породивший её танк, чтобы танк запомнил пулю.
@@ -136,10 +135,10 @@ class Tank extends GameEngine.Body {
 			}
 
 			// Добавить пулю в сцену.
-			const scene = Util.getScene(this)
-			scene.add(bullet)
+			// const scene = Util.getScene(this)
+			this.scene.add(bullet)
 			// Добавить пулю в аркадную физику.
-			scene.arcadePhysics.add(bullet)
+			this.scene.arcadePhysics.add(bullet)
 		}
 	}
 }
