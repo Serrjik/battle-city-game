@@ -43,10 +43,13 @@ class Tank extends GameEngine.Body {
 
 				// Если пуля столкнулась не с породившим её танком:
 				else {
-					// Сделать этот танк невидимым:
-					this.visible = false
+					// Уничтожить танк - последовательные шаги.
 					// Удалить этот танк из аркадной физики:
 					this.scene.arcadePhysics.remove(this)
+					// Удалить этот танк из сцены:
+					this.scene.remove(this)
+					// Сделать этот танк невидимым:
+					// this.visible = false
 				}
 			}
 
@@ -56,6 +59,36 @@ class Tank extends GameEngine.Body {
 	}
 
 	movementUpdate (keyboard) {
+		// λ‎-функция (для сокращения кода)
+		const sd = x => this.setDirect(x, keyboard.space)
+		// Как было до λ‎-функции:
+		// if (keyboard.arrowUp) {
+		// 	this.setDirect('up', keyboard.space)
+		// }
+
+		if (keyboard.arrowUp) {
+			sd('up')
+		}
+
+		else if (keyboard.arrowLeft) {
+			sd('left')
+		}
+
+		else if (keyboard.arrowRight) {
+			sd('right')
+		}
+
+		else if (keyboard.arrowDown) {
+			sd('down')
+		}
+
+		else {
+			sd(null)
+		}
+	}
+
+	// Установить направление.
+	setDirect (direct, fireCommand) {
 		this.velocity.x = 0
 		this.velocity.y = 0
 
@@ -63,7 +96,7 @@ class Tank extends GameEngine.Body {
 			this.resumeAnimation()
 		}
 
-		if (keyboard.arrowLeft) {
+		if (direct === 'left') {
 			this.velocity.x = -Tank.NORMAL_SPEED
 
 			if (this.animation !== 'moveLeft') {
@@ -71,7 +104,7 @@ class Tank extends GameEngine.Body {
 			}
 		}
 
-		else if (keyboard.arrowRight) {
+		else if (direct === 'right') {
 			this.velocity.x = Tank.NORMAL_SPEED
 
 			if (this.animation !== 'moveRight') {
@@ -79,15 +112,15 @@ class Tank extends GameEngine.Body {
 			}
 		}
 
-		else if (keyboard.arrowDown) {
+		else if (direct === 'down') {
 			this.velocity.y = Tank.NORMAL_SPEED
-
+// console.log(Tank.NORMAL_SPEED)
 			if (this.animation !== 'moveDown') {
 				this.startAnimation('moveDown')
 			}	
 		}
 
-		else if (keyboard.arrowUp) {
+		else if (direct === 'up') {
 			this.velocity.y = -Tank.NORMAL_SPEED
 
 			if (this.animation !== 'moveUp') {
@@ -100,7 +133,7 @@ class Tank extends GameEngine.Body {
 		}
 
 		// Выстрел должен происходить не чаще, чем задано в BULLET_TIMEOUT.
-		if (keyboard.space && Util.delay('tank' + this.uid, Tank.BULLET_TIMEOUT)) {
+		if (fireCommand && Util.delay('tank' + this.uid, Tank.BULLET_TIMEOUT)) {
 			// Создать пулю.
 			const bullet = new Bullet({
 				debug: DEBUG_MODE,

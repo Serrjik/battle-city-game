@@ -120,6 +120,14 @@
 		}
 	}
 
+	/*
+		Метод возвращает случайный аргумент
+		из множества переданных в этот метод аргументов.
+	*/
+	Util.getRandomFrom = function getRandomFrom (...array) {
+		return array[Math.floor(Math.random() * array.length)]
+	}
+
 	window.GameEngine = window.GameEngine || {}
 	window.GameEngine.Util = Util
 

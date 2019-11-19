@@ -5,12 +5,16 @@ class Party extends GameEngine.Scene {
 			name: 'party',
 			...args
 		})
+
+		// Набор врагов.
+		this.enemies = new Set
 	}
 
 	loading (loader) {
 		loader.addImage('spriteSheet', 'static/Battle City Sprites.png')
 		loader.addJson('atlas', 'static/atlas.json')
 		loader.addJson('map', 'static/map1.json')
+		loader.addJson('party', 'static/party.json')
 	}
 
 	init () {
@@ -21,6 +25,8 @@ class Party extends GameEngine.Scene {
 		Bullet.texture = Topology.texture = Tank.texture = loader.getImage('spriteSheet')
 		// Поличить атлас:
 		Bullet.atlas = Topology.atlas = Tank.atlas = loader.getJson('atlas')
+
+		this.partyData = loader.getJson('party')
 
 		// Аркада будет на уровне сцены.
 		this.arcadePhysics = new GameEngine.ArcadePhysics
@@ -98,9 +104,54 @@ class Party extends GameEngine.Scene {
 	update () {
 		// Экспортировать клавиатуру из игры.
 		const { keyboard } = this.parent
+		// Массив танков противника для перенаправления движения.
+		const enemyTankForRedirect = []
+
 		this.mainTank.movementUpdate(keyboard)
 
 		this.arcadePhysics.processing()
+
+		// Генерация танков-ботов:
+		/*
+			Если на текущий момент количество врагов меньше, чем должно быть,
+			и с момента генерации последнего врага прошло времени больше,
+			чем spawnDelay.
+		*/
+		if (
+			this.enemies.size < this.partyData.enemy.simultaneously
+			&& Util.delay(this.uid + 'enemyGeneration', this.partyData.enemy.spawnDelay)
+		) { // Генерировать новый танк!
+			// Где будет располагаться танк противника.
+			const [x, y] = this.topology.getCoordinats('enemy')
+			// Создание танка противника.
+			const enemyTank = new Tank({
+				x: x * this.topology.size,
+				y: y * this.topology.size
+			})
+
+			// Добавить танк противника в игровой мир.
+			this.enemies.add(enemyTank)
+			// Добавить танк противника в отрисовку.
+			this.add(enemyTank)
+			// Добавить танк противника в аркадную физику.
+			this.arcadePhysics.add(enemyTank)
+
+			this.direct = 'down'
+
+			// Установить первоначальное направление движения танка противника.
+			enemyTank.setDirect('down')
+			// enemyTank.direct = 'down'
+			console.log(enemyTank)
+
+			// Что танк противника делает при столкновении:
+			enemyTank.on('collision', (a, b) => {
+				// Если столкнулся со стеной.
+				if (a.isBrick) {
+					// Добавить танк в массив для перенаправления движения.
+					enemyTankForRedirect.add(b)
+				}
+			})
+		}
 
 		for (const object of this.arcadePhysics.objects) {
 			// Если это пуля и её нужно уничтожить:
@@ -108,7 +159,18 @@ class Party extends GameEngine.Scene {
 				// Уничтожить пулю.
 				object.destroy()
 			}
+		}
 
+		// Перебрать танки противника в массиве для перенаправления движения.
+		for (const enemyTank of enemyTankForRedirect) {
+			// Задать танку врага новое направление.
+			enemyTank.direct = Util.getRandomFrom('up', 'left', 'right', 'down')
+		}
+
+		// Перебрать вообще все танки противника.
+		for (const enemyTank of this.enemies) {
+			console.log(enemyTank.direct)
+			enemyTank.setDirect(enemyTank.direct)
 		}
 	}
 }
