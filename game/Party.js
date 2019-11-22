@@ -43,7 +43,8 @@ class Party extends GameEngine.Scene {
 			x: -10,
 			y: -10,
 			width: width + 20,
-			height: 10
+			// Высота такая, чтобы боты не застревали в стене.
+			height: 9
 		}))
 
 		// Стена снизу.
@@ -52,7 +53,7 @@ class Party extends GameEngine.Scene {
 			x: -10,
 			y: height,
 			width: width + 20,
-			height: 10
+			height: 9
 		}))
 
 		// Стена слева.
@@ -60,7 +61,7 @@ class Party extends GameEngine.Scene {
 			static: true,
 			x: -10,
 			y: -10,
-			width: 10,
+			width: 9,
 			height: height + 20
 		}))
 
@@ -69,7 +70,7 @@ class Party extends GameEngine.Scene {
 			static: true,
 			x: width,
 			y: -10,
-			width: 10,
+			width: 9,
 			height: height + 20
 		}))
 
@@ -136,21 +137,32 @@ class Party extends GameEngine.Scene {
 			// Добавить танк противника в аркадную физику.
 			this.arcadePhysics.add(enemyTank)
 
-			this.direct = 'down'
-
 			// Установить первоначальное направление движения танка противника.
 			enemyTank.setDirect('down')
 			// enemyTank.direct = 'down'
-			console.log(enemyTank)
+			// console.log(enemyTank.y)
 
-			// Что танк противника делает при столкновении:
-			enemyTank.on('collision', (a, b) => {
-				// Если столкнулся со стеной.
-				if (a.isBrick) {
-					// Добавить танк в массив для перенаправления движения.
-					enemyTankForRedirect.add(b)
-				}
-			})
+			// // Что танк противника делает при столкновении:
+			// enemyTank.on('collision', (a, b) => {
+			// 	// console.log(a, b)
+
+			// 	// Если столкнулся со стеной.
+			// 	if (a.isBrick) {
+			// 		// Добавить танк в массив для перенаправления движения.
+			// 		enemyTankForRedirect.add(b)
+			// 	}
+			// })
+
+			// enemyTank.on('collision', () => {
+			// 	console.log('fired')
+			// })
+
+		}
+
+		// Перебрать вообще все танки противника.
+		for (const enemyTank of this.enemies) {
+			// console.log(enemyTank.direct)
+			// enemyTank.setDirect(enemyTank.direct)
 		}
 
 		for (const object of this.arcadePhysics.objects) {
@@ -161,16 +173,10 @@ class Party extends GameEngine.Scene {
 			}
 		}
 
-		// Перебрать танки противника в массиве для перенаправления движения.
-		for (const enemyTank of enemyTankForRedirect) {
-			// Задать танку врага новое направление.
-			enemyTank.direct = Util.getRandomFrom('up', 'left', 'right', 'down')
-		}
-
-		// Перебрать вообще все танки противника.
-		for (const enemyTank of this.enemies) {
-			console.log(enemyTank.direct)
-			enemyTank.setDirect(enemyTank.direct)
-		}
+		// // Перебрать танки противника в массиве для перенаправления движения.
+		// for (const enemyTank of enemyTankForRedirect) {
+		// 	// Задать танку врага новое направление.
+		// 	enemyTank.direct = Util.getRandomFrom('up', 'left', 'right', 'down')
+		// }
 	}
 }

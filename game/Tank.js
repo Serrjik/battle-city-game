@@ -8,7 +8,7 @@ class Tank extends GameEngine.Body {
 		const args = Object.assign({
 			scale: 3.5,
 			// Ключи, которые автоматически будут подмешиваться в спрайт.
-			keysDefault: ['yellow', 'type1'],
+			keysDefault: ['gray', 'type1'],
 			debug: DEBUG_MODE
 			/*
 				По параметрам body будем проверять столкновение 2-х объектов.
@@ -114,10 +114,11 @@ class Tank extends GameEngine.Body {
 
 		else if (direct === 'down') {
 			this.velocity.y = Tank.NORMAL_SPEED
-// console.log(Tank.NORMAL_SPEED)
+			// console.log(this.y)
+
 			if (this.animation !== 'moveDown') {
 				this.startAnimation('moveDown')
-			}	
+			}
 		}
 
 		else if (direct === 'up') {
