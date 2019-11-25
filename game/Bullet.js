@@ -6,7 +6,7 @@
 class Bullet extends GameEngine.Body {
 	constructor (originalArgs = {}) {
 		const args = Object.assign({
-			// scale: 4,
+			scale: 2,
 			anchorX: 0.5,
 			anchorY: 0.5,
 			// debug: true,
@@ -30,10 +30,15 @@ class Bullet extends GameEngine.Body {
 		this.setFramesCollection(Bullet.atlas.frames)
 		this.setAnimationsCollection(Bullet.atlas.actions)
 
-		this.on('collision', a => {
+		this.on('collision', (a, b) => {
 			// Если a - танк, который породил пулю:
 			if (a === this.tank) {
 				// Игнорировать столкновения со своим собственным танком.
+				return
+			}
+
+			// Если пуля вражеская и попала во вражеский объект.
+			if (a.isEnemy && blur.isEnemy) {
 				return
 			}
 

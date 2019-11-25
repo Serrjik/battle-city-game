@@ -1,7 +1,7 @@
 {
     "fieldSize": 50,
     "map": [
-        ["enemy", null, null, null, null, null, null, null, null, null, null, null, null],
+        [null, "enemy", null, null, null, "enemy", null, null, null, "enemy", null, null, null],
         [null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null],
         [null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null],
         [null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null, "brick", null],

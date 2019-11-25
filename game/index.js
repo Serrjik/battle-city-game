@@ -3,7 +3,7 @@
 	чтобы не писать каждый раз перед Loader'ом - GameEngine (деструктуризация).
 	Не нужно будет писать GameEngine.Loader
 */
-const DEBUG_MODE = true
+const DEBUG_MODE = false
 
 const { Body, Game, Scene, ArcadePhysics, Util, Sprite } = GameEngine
 
