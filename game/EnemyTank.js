@@ -1,4 +1,9 @@
-class EnemyTank extends Tank {
+import { Util } from '../engine'
+
+import Tank from './Tank'
+import Bullet from './Bullet'
+
+export default class EnemyTank extends Tank {
 	constructor (originalArgs = {}) {
 		super({
 			// Ключи, которые автоматически будут подмешиваться в спрайт.

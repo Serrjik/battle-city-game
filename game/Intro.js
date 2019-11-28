@@ -1,5 +1,7 @@
+import { Scene, Sprite, Util } from '../engine'
+
 // Intro - стартовая сцена.
-class Intro extends GameEngine.Scene {
+export default class Intro extends Scene {
 	constructor (args = {}) {
 		super({
 			name: 'introScene',

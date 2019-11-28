@@ -1,9 +1,11 @@
+import { Util, Body } from '../engine'
+
 /*
 	Класс Bullet в принципе то же, что и Body.
 	Но есть параметры по умолчанию, которые можно изменить и дополнить извне.
 	Отчасти класс следует паттерну "Фабрика".
 */
-class Bullet extends GameEngine.Body {
+export default class Bullet extends Body {
 	constructor (originalArgs = {}) {
 		const args = Object.assign({
 			scale: 2,

@@ -1,5 +1,11 @@
+import { Container, Body } from '../engine'
+
+import { DEBUG_MODE } from './setting.json'
+
+import Bullet from './Bullet'
+
 // Topology - контейнер, который хранит в себе все элементы карты.
-class Topology extends GameEngine.Container {
+export default class Topology extends Container {
 	constructor (args = {}) {
 		super({})
 
@@ -31,7 +37,7 @@ class Topology extends GameEngine.Container {
 			*/
 			for (let dx = 0; dx <= 1; dx++) {
 				for (let dy = 0; dy <= 1; dy++) {
-					const body = new GameEngine.Body(Topology.texture, {
+					const body = new Body(Topology.texture, {
 						debug: DEBUG_MODE,
 						static: true,
 						anchorX: dx,

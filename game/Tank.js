@@ -1,9 +1,15 @@
+import { Body, Util } from '../engine'
+
+import { DEBUG_MODE } from './setting.json'
+
+import Bullet from './Bullet'
+
 /*
 	Класс Tank в принципе то же, что и Body.
 	Но есть параметры по умолчанию, которые можно изменить и дополнить извне.
 	Отчасти класс следует паттерну "Фабрика".
 */
-class Tank extends GameEngine.Body {
+export default class Tank extends Body {
 	constructor (originalArgs = {}) {
 		const args = Object.assign({
 			scale: 3.5,

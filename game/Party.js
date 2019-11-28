@@ -1,5 +1,12 @@
+import { Scene, Util, ArcadePhysics, Body } from '../engine'
+
+import Bullet from './Bullet'
+import EnemyTank from './EnemyTank'
+import Topology from './Topology'
+import Tank from './Tank'
+
 // Party - сцена.
-class Party extends GameEngine.Scene {
+export default class Party extends Scene {
 	constructor (args = {}) {
 		super({
 			name: 'party',
@@ -29,7 +36,7 @@ class Party extends GameEngine.Scene {
 		this.partyData = loader.getJson('party')
 
 		// Аркада будет на уровне сцены.
-		this.arcadePhysics = new GameEngine.ArcadePhysics
+		this.arcadePhysics = new ArcadePhysics
 
 		/*
 			Нарисовать невидимые стены (тела (Body) без текстур)
