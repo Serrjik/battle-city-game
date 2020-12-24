@@ -26,10 +26,13 @@ export default class EventEmitter {
 	}
 
 	removeEventListener (name = null, handler = null) {
-/*		// Если присутствую обработчик handler с именем name, значит мы хотим удалить его
-		if (name && handler) {
+		/*
+			Если присутствуют обработчик handler с именем name,
+			значит мы хотим удалить его
+		*/
+		// if (name && handler) {
 
-		}*/
+		// }
 	}
 
 	emit (name, ...args) {

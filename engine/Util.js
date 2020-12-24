@@ -103,7 +103,10 @@ Util.tween = function tween (params) {
 
 	tweenFunction()
 
-	// Внутри setInterval функция, которая будет вызываться с максимальной частотой.
+	/*
+		Внутри setInterval функция,
+		которая будет вызываться с максимальной частотой.
+	*/
 	const intervalFlag = setInterval(tweenFunction)
 
 	return () => {

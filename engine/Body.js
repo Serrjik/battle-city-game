@@ -56,11 +56,12 @@ export default class Body extends Sprite {
 	}
 
 	/*
-		Метод проверяет, находится ли точка с координатами x, y внутри тела или нет.
+		Метод проверяет,
+		находится ли точка с координатами x, y внутри тела или нет.
 		Возвращает true если находится внутри, иначе возвращает false.
 	*/
 	isInside (x, y) {
-		// Проверяем наличие точки x, y внутри этого прямоугольника this.bodyRect:
+		// Проверяем наличие точки x, y внутри прямоугольника this.bodyRect:
 		return Util.isInside({ x, y }, this.bodyRect)
 	}
 
@@ -79,8 +80,10 @@ export default class Body extends Sprite {
 		context.drawImage(
 			// текстура, которую нужно отрисовать
 			this.texture,
-			// source-координаты (координаты участка изображения,
-			// который нужно отобразить)
+			/*
+				source-координаты (координаты участка изображения,
+				который нужно отобразить)
+			*/
 			this.frame.x,
 			this.frame.y,
 			this.frame.width,
@@ -96,7 +99,7 @@ export default class Body extends Sprite {
 			this.height * this.scaleY
 		)
 
-		// Если debug === true   рисуем точку:
+		// Если debug === true, то рисуем точку:
 		if (this.debug) {
 			// Прямоугольник
 			const { x, y, width, height } = this.bodyRect

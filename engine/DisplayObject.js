@@ -3,12 +3,13 @@ import Util from './Util'
 
 /*
 	Экземпляр класса DisplayObject содержит объект, который нужно отобразить
-	(sprite, animation sprite, контейнер, и любая сущность, которую нужно отрисовать).
+	(sprite, animation sprite, контейнер, и любая сущность, которую нужно
+	отрисовать).
 */
 export default class DisplayObject extends EventEmitter {
 	constructor (args = {}) {
 		super()
-		
+
 		this.uid = Util.generateUid()
 
 		// координаты содержащегося объекта
@@ -20,9 +21,10 @@ export default class DisplayObject extends EventEmitter {
 		// на сколько нужно повернуть содержащийся объект
 		this.rotation = args.rotation || 0
 		/*
-			Anchor содержащегося объекта (показывает, какую часть изображения в процентах нужно взять,
-			чтобы получить настоящий центр изображения).
-			Изначально центр изображения находится в его левом верхнем углу (координаты 0, 0).
+			Anchor содержащегося объекта (показывает, какую часть изображения в
+			процентах нужно взять, чтобы получить настоящий центр изображения).
+			Изначально центр изображения находится в его левом верхнем углу
+			(координаты 0, 0).
 		*/
 		this.anchorX = args.anchorX || 0
 		this.anchorY = args.anchorY || 0
@@ -34,7 +36,7 @@ export default class DisplayObject extends EventEmitter {
 		// Масштаб по оси Y
 		this.scaleY = args.scaleY || 1
 
-		// Поле по умолчанию null. Должно ссылаться на верхний по иерархии элемент.
+		// Поле должно ссылаться на верхний по иерархии элемент.
 		this.parent = null
 		// Поле указывает, нужно отрисовывать объект либо нет.
 		this.visible = true
@@ -55,8 +57,10 @@ export default class DisplayObject extends EventEmitter {
 
 	// Геттер - координата X левого верхнего угла
 	get absoluteX () {
-		// здесь не используем scale, потому что он используется
-		// только в момент отрисовки изображения
+		/*
+			Здесь не используем scale, потому что он используется
+			только в момент отрисовки изображения
+		*/
 		return this.x - this.anchorX * this.width * this.scaleX
 	}
 
@@ -68,8 +72,10 @@ export default class DisplayObject extends EventEmitter {
 
 	// Геттер - координата Y левого верхнего угла
 	get absoluteY () {
-		// здесь не используем scale, потому что он используется
-		// только в момент отрисовки изображения
+		/*
+			Здесь не используем scale, потому что он используется
+			только в момент отрисовки изображения
+		*/
 		return this.y - this.anchorY * this.height * this.scaleY
 	}
 
@@ -117,14 +123,13 @@ export default class DisplayObject extends EventEmitter {
 		if (parent && parent.add) {
 			parent.add(this)
 		}
-		
+
 		this.parent = parent
 	}
 
 	/*
 		draw() будет вроде фильтра,
-		который будет срабатывать только в том случае,
-		если объект будет виден
+		который будет срабатывать только в том случае,если объект будет виден
 	*/
 	draw (callback) {
 		if (this.visible) {

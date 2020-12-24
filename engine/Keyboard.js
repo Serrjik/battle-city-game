@@ -1,7 +1,7 @@
 // Модуль следит за нажатиями клавиш.
 export default class Keyboard {
 	constructor () {
-		// Так написано, потому что ниже обращение просто по this не работает.
+		// Так написано, потому что ниже обращение просто по this не сработает.
 		const keyboard = this
 
 		// false - непрожаты, true - прожаты
@@ -12,7 +12,6 @@ export default class Keyboard {
 		this.space = false
 
 		document.body.addEventListener('keydown', function (event) {
-			// console.log(event.code)
 			switch (event.code) {
 				case "KeyW":
 					keyboard.arrowUp = true
@@ -21,11 +20,11 @@ export default class Keyboard {
 				case "KeyS":
 					keyboard.arrowDown = true
 					break
-					
+
 				case "KeyD":
 					keyboard.arrowRight = true
 					break
-					
+
 				case "KeyA":
 					keyboard.arrowLeft = true
 					break
@@ -37,7 +36,6 @@ export default class Keyboard {
 		})
 
 		document.body.addEventListener('keyup', function (event) {
-			// console.log(event.code)
 			switch (event.code) {
 				case "KeyW":
 					keyboard.arrowUp = false
@@ -46,15 +44,15 @@ export default class Keyboard {
 				case "KeyS":
 					keyboard.arrowDown = false
 					break
-					
+
 				case "KeyD":
 					keyboard.arrowRight = false
 					break
-					
+
 				case "KeyA":
 					keyboard.arrowLeft = false
 					break
-					
+
 				case "Space":
 					keyboard.space = false
 					break

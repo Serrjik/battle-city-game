@@ -5,34 +5,30 @@ import Util from './Util'
 export default class Sprite extends DisplayObject {
 	// Текстура - то, что загрузили с клиента (изображение)
 	constructor (texture, args = {}) {
-		/*
-			super() вызывает конструктор родительского класса.
-			Нужно ВСЕГДА вызывать в конструкторе.
-		*/
 		super(args)
-		// фрейм - кусок изображения, который нужно отрисовать
+
+		// Фрейм - кусок изображения, который нужно отрисовать.
 		const frame = args.frame || {}
 		const velocity = args.velocity || {}
 
-		// текстура
+		// Текстура.
 		this.texture = texture
 		// Массив ключей, которые будут подмешиваться автоматически.
 		this.keysDefault = args.keysDefault || []
 
 		this.frames = []
-		// this.frames = args.frames || []
 		this.frameNumber = 0
-		// Через какое количество времени нужно будет обновить картинку
+		// Через какое количество времени нужно будет обновить картинку.
 		this.frameDelay = 0
 
-		// this.animations = []
 		this.animations = {}
-		this.animation = '' // Название анимации, которая будет действовать
+		// Название анимации, которая будет действовать
+		this.animation = ''
 		this.animationPaused = false
 
 		/*
-			Скорость.
-			Вместо того, чтобы изменять координаты объекта, будем изменять его скорость.
+			Скорость. Вместо того, чтобы изменять координаты объекта, будем
+			изменять его скорость.
 			Координаты будут изменяться автоматом опираясь на скорость.
 		*/
 		this.velocity = {
@@ -56,10 +52,9 @@ export default class Sprite extends DisplayObject {
 		}
 	}
 
-	// Метод задает массив frames
+	// Метод задает массив frames.
 	setFramesCollection (framesCollection) {
 		this.frames = framesCollection
-		// console.log(this.frames)
 	}
 
 	setAnimationsCollection (animationsCollection) {
@@ -71,7 +66,8 @@ export default class Sprite extends DisplayObject {
 		// Проверить, есть ли такая анимация?
 		// Если такой анимации нет:
 		if (!this.animations.hasOwnProperty(name)) {
-			return false // Не удалось назначить такую анимацию.
+			// Не удалось назначить такую анимацию.
+			return false
 		}
 
 		// Если такая анимация есть:
@@ -79,7 +75,7 @@ export default class Sprite extends DisplayObject {
 
 		this.animation = name
 		this.frameDelay = duration / keys.length
-		// Обратиться к выбранной анимации и выбрать самый первый фрейм:
+		// Обратиться к выбранной анимации и выбрать самый первый фрейм.
 		this.setFrameByKeys(...keys[0])
 	}
 
@@ -94,7 +90,6 @@ export default class Sprite extends DisplayObject {
 	}
 
 	setFrameByKeys (...keys) {
-
 		const frame = this.getFrameByKeys(...keys, ...this.keysDefault)
 
 		// Если фрейм не был найден:
@@ -121,7 +116,7 @@ export default class Sprite extends DisplayObject {
 		let flag = false
 
 		for (const frame of this.frames) {
-			// Предположим, что фрейм, который обрабатывается сейчас, подходит
+			// Предположим, что фрейм, который обрабатывается сейчас, подходит.
 			flag = true
 
 			for (const key of keys) {
@@ -140,7 +135,9 @@ export default class Sprite extends DisplayObject {
 
 	// Метод изменяет координаты спрайта, опираясь на скорость.
 	tick (timestamp) {
-		if (!this.animationPaused && this.animation && Util.delay(this.animation + this.uid, this.frameDelay)) {
+		if (!this.animationPaused &&
+		this.animation
+		&& Util.delay(this.animation + this.uid, this.frameDelay)) {
 			const { keys } = this.animations[this.animation]
 
 			this.frameNumber = (this.frameNumber + 1) % keys.length
@@ -149,8 +146,8 @@ export default class Sprite extends DisplayObject {
 			/*
 				Каждый раз, перед тем как будет обновляться фрейм,
 				будет генерироваться событие frameChange.
-				И можно передавать список аргументов this (сколько угодно через запятую).
-				Любой объект может генерировать события.
+				И можно передавать список аргументов this (сколько угодно через
+				запятую). Любой объект может генерировать события.
 			*/
 			this.emit('frameChange', this)
 		}
@@ -159,7 +156,7 @@ export default class Sprite extends DisplayObject {
 		this.y += this.velocity.y
 	}
 
-	// Функция рисует картинку основываясь на переданных канвасе и контексте
+	// Функция рисует картинку основываясь на переданных канвасе и контексте.
 	draw (canvas, context) {
 		/*
 			super.draw() проверяет, объект - visible, или нет.
@@ -170,7 +167,10 @@ export default class Sprite extends DisplayObject {
 			context.save()
 			// Сместить координаты:
 			context.translate(this.x, this.y)
-			// - стоит для того чтобы вращение происходило против часовой стрелки
+			/*
+				- стоит для того чтобы вращение происходило
+				против часовой стрелки.
+			*/
 			context.rotate(-this.rotation)
 			/*
 				В спрайтах откажемся от масштаба
@@ -183,18 +183,20 @@ export default class Sprite extends DisplayObject {
 				context.drawImage(
 					// текстура, которую нужно отрисовать
 					this.texture,
-					// source-координаты (координаты участка изображения,
-					// который нужно отобразить)
+					/*
+						source-координаты (координаты участка изображения,
+						который нужно отобразить).
+					*/
 					this.frame.x,
 					this.frame.y,
 					this.frame.width,
 					this.frame.height,
-					// координаты участка, где нужно отобразить
+					// Координаты участка, где нужно отобразить.
 					this.absoluteX - this.x,
 					this.absoluteY - this.y,
 					/*
 						Здесь не изменяем размер изображения,
-						потому что он изменяется для всего контекста
+						потому что он изменяется для всего контекста.
 						Масштабировать будем непосредственно здесь.
 					*/
 					this.width * this.scaleX,
@@ -203,10 +205,10 @@ export default class Sprite extends DisplayObject {
 			}
 
 			// Отображает, где якорь?
-			/*context.beginPath()
-			context.fillStyle = 'red'
-			context.arc(0, 0, 5, 0, Math.PI * 2)
-			context.fill()*/
+			// context.beginPath()
+			// context.fillStyle = 'red'
+			// context.arc(0, 0, 5, 0, Math.PI * 2)
+			// context.fill()
 
 			context.restore()
 		})

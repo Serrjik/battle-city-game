@@ -1,4 +1,4 @@
-import { Body, Game, Scene, ArcadePhysics, Util, Sprite } from '../engine'
+import { Body, Game, Scene, ArcadePhysics, Util, Sprite } from './../engine'
 import Intro from './Intro'
 import Party from './Party'
 
@@ -9,8 +9,8 @@ export default new Game({
 	height: 650,
 	background: 'black',
 	/*
-		Сцена - то, что на данный момент является актуальным, действующим выступлением.
-		Меню - одна сцена. Игра - другая сцена.
+		Сцена - то, что на данный момент является актуальным, действующим
+		выступлением. Меню - одна сцена. Игра - другая сцена.
 		Третья сцена между матчами, где показаны счет, уровень.
 		Сцены в игре имеют только две характеристики:
 		либо они ожидают старта, либо стартовали.
@@ -18,8 +18,9 @@ export default new Game({
 		Чтобы запустить её снова, нужно будет создать её новый экземпляр,
 		добавить его в game, потом заново запустить.
 	*/
-	scenes: [ // массив сцен (сюда передаем сцены)
-		new Intro({ autoStart: false }), // new Intro(), new Party() можно писать без круглых скобок
+	// массив сцен (сюда передаем сцены)
+	scenes: [
+		new Intro({ autoStart: false }),
 		new Party({ autoStart: true })
 	]
 })

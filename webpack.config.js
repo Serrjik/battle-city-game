@@ -2,7 +2,9 @@ const path = require('path')
 
 module.exports = {
 	entry: {
+		// Для продакшена.
 		GameEngine: './engine/index.js',
+		// Для отладки.
 		app: './game/index.js'
 	},
 	output: {

@@ -1,6 +1,9 @@
 import DisplayObject from './DisplayObject'
 
-// Класс Container хранит в себе список всех изображений, которые нужно отрисовать
+/*
+	Класс Container хранит в себе список всех изображений,
+	которые нужно отрисовать
+*/
 export default class Container extends DisplayObject {
 	constructor (args = {}) {
 		/*
@@ -12,7 +15,8 @@ export default class Container extends DisplayObject {
 		this.displayObjects = []
 		/*
 			Ширина и длина для контейнера не нужны - удалим их.
-			Хотя так делать не положено, но мы сделали, потому что есть возможность.
+			Хотя так делать не положено, но мы сделали,
+			потому что есть возможность.
 		*/
 		delete this.width
 		delete this.height
@@ -29,7 +33,10 @@ export default class Container extends DisplayObject {
 		}
 	}
 
-	// Метод проходит по всем дочерним элементам контейнера и вызывает у них update().
+	/*
+		Метод проходит по всем дочерним элементам контейнера
+		и вызывает у них update().
+	*/
 	tick (timestamp) {
 		for (const displayObject of this.displayObjects) {
 			if (displayObject.tick) {
