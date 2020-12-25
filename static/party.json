@@ -1,7 +1,7 @@
 {
 	"enemy": {
 		"commonNumber": 10,
-		"simultaneously": 5,
+		"simultaneously": 3,
 		"spawnDelay": 2500
 	}
 }

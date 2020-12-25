@@ -15,6 +15,8 @@ export default class Party extends Scene {
 
 		// Набор врагов.
 		this.enemies = new Set
+		// Общее количество врагов (включая уже удалённых).
+		this.commonEnemies = 0
 	}
 
 	loading (loader) {
@@ -158,9 +160,13 @@ export default class Party extends Scene {
 			чем spawnDelay.
 		*/
 		if (
-			this.enemies.size < this.partyData.enemy.simultaneously
-			&& Util.delay(this.uid + 'enemyGeneration', this.partyData.enemy.spawnDelay)
-		) { // Генерировать новый танк!
+			this.enemies.size < this.partyData.enemy.simultaneously &&
+			Util.delay(
+				this.uid + 'enemyGeneration', this.partyData.enemy.spawnDelay
+			) &&
+			this.commonEnemies < this.partyData.enemy.commonNumber
+		) {
+			// Генерировать новый танк!
 			// Где будет располагаться танк противника.
 			const [x, y] = Util.getRandomFrom(...this.topology.getCoordinats('enemy'))
 
@@ -169,6 +175,9 @@ export default class Party extends Scene {
 				x: x * this.topology.size,
 				y: y * this.topology.size
 			})
+
+			// Увеличить общее количество врагов.
+			this.commonEnemies++
 
 			/*
 				Флаг isEnemy означает, что пуля принадлежит
