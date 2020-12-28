@@ -61,6 +61,12 @@ export default class ArcadePhysics {
 			// j = i + 1 чтобы не проверять комбинацию пар дважды.
 			for (let j = i + 1; j < objects.length; j++) {
 				const b = objects[j]
+
+				// 2 статических тела не проверяются на столкновения.
+				if (a.static && b.static) {
+					continue
+				}
+				
 				const bodyB = b.bodyRect
 				// Все вершины объекта.
 				const topsB = b.tops
@@ -70,11 +76,6 @@ export default class ArcadePhysics {
 				*/
 				const vxB = b.velocity.x
 				const vyB = b.velocity.y
-
-				// 2 статических тела не проверяются на столкновения.
-				if (a.static && b.static) {
-					continue
-				}
 
 				/*
 					Чтобы понять, сталкиваются ли 2 тела, нужно понять,
