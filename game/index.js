@@ -1,4 +1,5 @@
 import { Body, Game, Scene, ArcadePhysics, Util, Sprite } from './../engine'
+import Home from './Home'
 import Intro from './Intro'
 import Party from './Party'
 
@@ -20,7 +21,8 @@ export default new Game({
 	*/
 	// массив сцен (сюда передаем сцены)
 	scenes: [
+		new Home({ autoStart: true }),
 		new Intro({ autoStart: false }),
-		new Party({ autoStart: true })
+		new Party({ autoStart: false })
 	]
 })

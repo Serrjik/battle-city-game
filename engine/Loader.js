@@ -168,9 +168,13 @@ export default class Loader {
 		return new Promise((resolve, reject) => {
 			try {
 				const audio = new Audio
-				// audio.addEventListener('canplaythrough', () => waiter('canplaythrough'))
-				// audio.addEventListener('ended', () => waiter('ended'))
+				audio.volume = 0.05
+				// audio.addEventListener('durationchange', () => {
+				// 	waiter('durationchange')
+				// })
 				audio.src = src
+				resolve(audio)
+				
 
 				// let i = 0
 				// function waiter (event) {
@@ -178,7 +182,6 @@ export default class Loader {
 				// 	i++
 
 				// 	if (i >= 2) {
-				// 		resolve(audio)
 				// 	}
 				// }
 			}

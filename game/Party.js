@@ -31,7 +31,8 @@ export default class Party extends Scene {
 
 		// К моменту старта инициализовать все ресурсы:
 		// Получить текстуру пули, карты, танка:
-		Bullet.texture = Topology.texture = Tank.texture = loader.getImage('spriteSheet')
+		Bullet.texture = Topology.texture = Tank.texture = 
+			loader.getImage('spriteSheet')
 		// Поличить атлас:
 		Bullet.atlas = Topology.atlas = Tank.atlas = loader.getJson('atlas')
 
